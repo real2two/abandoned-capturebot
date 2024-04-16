@@ -24,8 +24,8 @@
     "discord-interactions": "^3.4.0",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.30.8",
+    "glob": "^10.3.12",
     "hyper-express": "^6.15.2",
-    "lodash": "^4.17.21",
     "mysql2": "^3.9.4",
     "nodemon": "^3.1.0"
   },

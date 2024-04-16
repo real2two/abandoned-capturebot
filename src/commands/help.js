@@ -1,7 +1,11 @@
 import Command from '../structures/Command.js';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { InteractionResponseType } from 'discord-interactions';
+import {
+  ButtonStyle,
+  ComponentType,
+  InteractionResponseType,
+} from 'discord-api-types/v10';
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -10,9 +14,22 @@ export default new Command({
 
   execute: ({ respond }) => {
     return respond({
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      type: InteractionResponseType.ChannelMessageWithSource,
       data: {
         content: 'Hello world',
+        components: [
+          {
+            type: ComponentType.ActionRow,
+            components: [
+              {
+                type: ComponentType.Button,
+                style: ButtonStyle.Primary,
+                label: 'press me',
+                customId: 'button',
+              },
+            ],
+          },
+        ],
       },
     });
   },

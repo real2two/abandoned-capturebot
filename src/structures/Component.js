@@ -1,15 +1,17 @@
-export default class Event {
+export default class Component {
   /**
-   * Create a event
+   * Create a component
    * @param {{
+   *   customId: RegExp;
    *   execute: import('../types/InteractionRequest').InteractionRequest;
-   * }} data The event data
+   * }} data The component data
    */
-  constructor({ execute }) {
+  constructor({ customId, execute }) {
+    this.customId = customId;
     this.execute = execute;
   }
   /**
-   * Execute the event
+   * Execute the component
    * @param {import('../types/InteractionRequest').InteractionRequestData} data The interaction data
    */
   execute(data) {

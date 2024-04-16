@@ -10,6 +10,13 @@ export default new Event({
         c.data instanceof SlashCommandBuilder &&
         c.data.name === data.interaction.data?.name,
     );
+
+    if (!command) {
+      return console.warn(
+        `Cannot find autocomplete command with ID: ${data.interaction.data?.name} (Is it in src/utils/commands.js?)`,
+      );
+    }
+
     return command?.autocomplete?.(data);
   },
 });
