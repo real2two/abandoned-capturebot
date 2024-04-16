@@ -16,7 +16,7 @@ export default new Event({
         `Cannot find command with ID: ${data.interaction.data?.name} (Is it in src/utils/commands.js?)`,
       );
     }
-    
+
     return command?.execute?.(data);
   },
 });

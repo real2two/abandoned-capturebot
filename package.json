@@ -2,7 +2,7 @@
   "name": "capturebot",
   "type": "module",
   "author": "Two",
-  "main": "src/index.js",
+  "main": "src/main/index.js",
   "scripts": {
     "start": "node -r dotenv/config .",
     "dev": "nodemon",

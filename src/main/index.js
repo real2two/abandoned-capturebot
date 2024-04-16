@@ -1,9 +1,9 @@
-import env from './utils/env.js';
-import events from './utils/events.js';
+import env from '../utils/env.js';
+import events from '../utils/events.js';
 
 import HyperExpress from 'hyper-express';
 import { verifyKey } from 'discord-interactions';
-import { camelize, snakelize } from './utils/convertCase.js';
+import { camelize, snakelize } from '../utils/convertCase.js';
 
 const app = new HyperExpress.Server();
 
@@ -21,8 +21,7 @@ app.post('/interactions', async (req, res) => {
   if (!isValidRequest) return res.status(401).end('Bad request signature');
 
   // Handles interactions
-  const body = await req.json();
-  const interaction = camelize(body); // Camelizes body
+  const interaction = camelize(await req.json()); // Camelizes the request body
   try {
     return events[interaction.type]?.execute({
       interaction,
