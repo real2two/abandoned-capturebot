@@ -13,18 +13,21 @@
     "schema/migrate": "dotenv -- tsx tools/migrateDatabase.ts"
   },
   "nodemonConfig": {
-    "ignore": [".git", "node_modules"],
-    "watch": ["./src"],
+    "ignore": [
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "./src"
+    ],
     "exec": "npm start",
     "ext": "ts, js"
   },
   "dependencies": {
-    "@biomejs/biome": "^1.7.0",
     "@discordjs/builders": "^1.7.0",
     "discord-interactions": "^3.4.0",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.30.8",
-    "glob": "^10.3.12",
     "hyper-express": "^6.15.2",
     "mysql2": "^3.9.4",
     "nodemon": "^3.1.0",
@@ -33,6 +36,7 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.7.0",
     "discord-api-types": "^0.37.79",
     "dotenv-cli": "^7.4.1",
     "drizzle-kit": "^0.20.14"
