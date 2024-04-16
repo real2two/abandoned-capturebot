@@ -1,4 +1,4 @@
-# Pokemon but with real people
+# Capturebot
 
 This is a Discord bot where you can catch users like you can in Pokemon.
 
