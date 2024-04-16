@@ -1,5 +1,5 @@
 {
-  "name": "pokemon-but-with-real-people",
+  "name": "capturebot",
   "type": "module",
   "author": "Two",
   "main": "src/index.js",
@@ -7,7 +7,10 @@
     "start": "node -r dotenv/config .",
     "dev": "nodemon",
     "format": "biome format --write ./",
-    "commands/create": "node -r dotenv/config tools/createCommands.js"
+    "commands/create": "node -r dotenv/config tools/createCommands.js",
+    "schema/push": "dotenv -e ../../.env drizzle-kit push:mysql",
+    "schema/generate": "dotenv -e ../../.env pnpm drizzle-kit generate:mysql",
+    "schema/migrate": "node -r dotenv/config tools/migrateDatabase.js"
   },
   "nodemonConfig": {
     "ignore": [".git", "node_modules"],
@@ -20,11 +23,15 @@
     "@discordjs/builders": "^1.7.0",
     "discord-interactions": "^3.4.0",
     "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.30.8",
     "hyper-express": "^6.15.2",
     "lodash": "^4.17.21",
+    "mysql2": "^3.9.4",
     "nodemon": "^3.1.0"
   },
   "devDependencies": {
-    "discord-api-types": "^0.37.79"
+    "discord-api-types": "^0.37.79",
+    "dotenv-cli": "^7.4.1",
+    "drizzle-kit": "^0.20.14"
   }
 }
