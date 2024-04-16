@@ -1,8 +1,8 @@
-import env from '../utils/env.js';
+import env from '../utils/env';
 import mysql from 'mysql2/promise';
 import { drizzle } from 'drizzle-orm/mysql2';
 
-export const connection = await mysql.createConnection({
+export const pool = mysql.createPool({
   host: env.DatabaseHost,
   port: env.DatabasePort,
   user: env.DatabaseUser,
@@ -14,4 +14,4 @@ export const connection = await mysql.createConnection({
   queueLimit: 0,
 });
 
-export const db = drizzle(connection);
+export const db = drizzle(pool);

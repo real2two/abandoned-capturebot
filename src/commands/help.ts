@@ -1,4 +1,4 @@
-import Command from '../structures/Command.js';
+import Command from '../structures/Command';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
 import {
@@ -11,7 +11,6 @@ export default new Command({
   data: new SlashCommandBuilder()
     .setName('help')
     .setDescription('Get the list of commands'),
-
   execute: ({ respond }) => {
     return respond({
       type: InteractionResponseType.ChannelMessageWithSource,

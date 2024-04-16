@@ -1,4 +1,4 @@
-import Component from '../structures/Component.js';
+import Component from '../structures/Component';
 
 import {
   InteractionResponseType,

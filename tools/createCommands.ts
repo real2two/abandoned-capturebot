@@ -1,5 +1,5 @@
-import env from '../src/utils/env.js';
-import commands from '../src/utils/commands.js';
+import env from '../src/utils/env';
+import commands from '../src/utils/commands';
 
 const res = await fetch(
   `https://discord.com/api/applications/${env.DiscordClientId}/commands`,

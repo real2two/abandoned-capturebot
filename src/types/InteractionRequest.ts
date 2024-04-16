@@ -4,11 +4,15 @@ import type {
   APIInteractionResponse,
   InteractionType,
 } from 'discord-api-types/v10';
-import type { Camelize } from './Camelize';
+import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
+
+export type CamelizedInteraction = ObjectToCamel<
+  APIBaseInteraction<InteractionType, any>
+>;
 
 export interface InteractionRequestData {
-  interaction: Camelize<APIBaseInteraction<InteractionType, any>>;
-  respond: (message: Camelize<APIInteractionResponse>) => unknown;
+  interaction: CamelizedInteraction;
+  respond: (message: ObjectToCamel<APIInteractionResponse>) => unknown;
   res: HyperExpress.Response<HyperExpress.DefaultResponseLocals>;
   req: HyperExpress.Request<HyperExpress.DefaultRequestLocals>;
 }

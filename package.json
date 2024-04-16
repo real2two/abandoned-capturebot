@@ -2,15 +2,15 @@
   "name": "capturebot",
   "type": "module",
   "author": "Two",
-  "main": "src/main/index.js",
+  "main": "src/main/index.ts",
   "scripts": {
-    "start": "node -r dotenv/config .",
+    "start": "dotenv -- tsx .",
     "dev": "nodemon",
     "format": "biome format --write ./",
-    "commands/create": "node -r dotenv/config tools/createCommands.js",
-    "schema/push": "dotenv -e ../../.env drizzle-kit push:mysql",
-    "schema/generate": "dotenv -e ../../.env pnpm drizzle-kit generate:mysql",
-    "schema/migrate": "node -r dotenv/config tools/migrateDatabase.js"
+    "commands/create": "dotenv -- tsx tools/createCommands.ts",
+    "schema/push": "drizzle-kit push:mysql",
+    "schema/generate": "pnpm drizzle-kit generate:mysql",
+    "schema/migrate": "dotenv -- tsx tools/migrateDatabase.ts"
   },
   "nodemonConfig": {
     "ignore": [".git", "node_modules"],
@@ -27,7 +27,10 @@
     "glob": "^10.3.12",
     "hyper-express": "^6.15.2",
     "mysql2": "^3.9.4",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "ts-case-convert": "^2.0.7",
+    "tsx": "^4.7.2",
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
     "discord-api-types": "^0.37.79",

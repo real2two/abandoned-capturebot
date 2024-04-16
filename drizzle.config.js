@@ -1,4 +1,4 @@
-import env from './src/utils/env.js';
+import env from './src/utils/env';
 
 export default {
   schema: './schema/**/*',
