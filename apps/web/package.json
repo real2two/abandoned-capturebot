@@ -2,7 +2,7 @@
   "name": "@/web",
   "type": "module",
   "private": true,
-  "main": "src/main/index.ts",
+  "main": "src/http/clusters.ts",
   "scripts": {
     "start": "dotenv -e ../../.env -- tsx .",
     "dev": "nodemon",
