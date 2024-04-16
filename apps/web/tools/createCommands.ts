@@ -1,4 +1,4 @@
-import env from '../src/utils/env';
+import env from '@/env';
 import commands from '../src/utils/commands';
 
 const res = await fetch(

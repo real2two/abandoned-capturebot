@@ -1,44 +1,26 @@
 {
   "name": "capturebot",
-  "type": "module",
-  "author": "Two",
-  "main": "src/main/index.ts",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "start": "dotenv -- tsx .",
-    "dev": "nodemon",
+    "start": "dotenv -- turbo run start",
+    "dev": "dotenv -- turbo run dev",
+    "lint": "turbo run lint",
     "format": "biome format --write ./",
-    "commands/create": "dotenv -- tsx tools/createCommands.ts",
-    "schema/push": "drizzle-kit push:mysql",
-    "schema/generate": "pnpm drizzle-kit generate:mysql",
-    "schema/migrate": "dotenv -- tsx tools/migrateDatabase.ts"
-  },
-  "nodemonConfig": {
-    "ignore": [
-      ".git",
-      "node_modules"
-    ],
-    "watch": [
-      "./src"
-    ],
-    "exec": "npm start",
-    "ext": "ts, js"
+    "commands/create": "cd apps/web && pnpm commands/create",
+    "schema/push": "cd packages/db && pnpm schema/push",
+    "schema/generate": "cd packages/db && pnpm schema/generate",
+    "schema/migrate": "cd packages/db && pnpm schema/migrate"
   },
   "dependencies": {
-    "@discordjs/builders": "^1.7.0",
-    "discord-interactions": "^3.4.0",
-    "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.30.8",
-    "hyper-express": "^6.15.2",
-    "mysql2": "^3.9.4",
-    "nodemon": "^3.1.0",
-    "ts-case-convert": "^2.0.7",
-    "tsx": "^4.7.2",
-    "typescript": "^5.4.5"
+    "dotenv-cli": "^7.4.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.0",
-    "discord-api-types": "^0.37.79",
-    "dotenv-cli": "^7.4.1",
-    "drizzle-kit": "^0.20.14"
+    "turbo": "^1.13.2"
+  },
+  "packageManager": "pnpm@9.0.1",
+  "engines": {
+    "node": ">=18"
   }
 }

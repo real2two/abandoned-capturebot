@@ -12,5 +12,12 @@ pnpm i # install dep
 pnpm start # start prod
 pnpm dev # start dev
 
-pnpm format # format code
+pnpm lint # eslint
+pnpm format # biome
+
+pnpm schema/push # pushes schema (do not use in prod)
+pnpm schema/generate # generate schema
+pnpm schema/migrate # migrate schema
+
+pnpm commands/create # creates application commands
 ```

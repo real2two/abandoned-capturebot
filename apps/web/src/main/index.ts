@@ -1,4 +1,4 @@
-import env from '../utils/env';
+import env from '@/env';
 import events from '../utils/events';
 
 import HyperExpress from 'hyper-express';

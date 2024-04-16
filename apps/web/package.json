@@ -1,0 +1,41 @@
+{
+  "name": "@/web",
+  "type": "module",
+  "private": true,
+  "main": "src/main/index.ts",
+  "scripts": {
+    "start": "dotenv -e ../../.env -- tsx .",
+    "dev": "nodemon",
+    "lint": "eslint ./**/*.ts",
+    "format": "cd ../../ && pnpm format",
+    "commands/create": "dotenv -e ../../.env -- tsx tools/createCommands.ts"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": ["@/eslint-config"]
+  },
+  "nodemonConfig": {
+    "ignore": [".git", "node_modules"],
+    "watch": ["./src"],
+    "exec": "npm start",
+    "ext": "ts, js"
+  },
+  "dependencies": {
+    "@/db": "workspace:*",
+    "@/env": "workspace:*",
+    "@discordjs/builders": "^1.7.0",
+    "tsx": "^4.7.2",
+    "typescript": "^5.4.5",
+    "dotenv-cli": "^7.4.1",
+    "hyper-express": "^6.15.2",
+    "discord-interactions": "^3.4.0",
+    "ts-case-convert": "^2.0.7"
+  },
+  "devDependencies": {
+    "@/eslint-config": "workspace:*",
+    "@/tsconfig": "workspace:*",
+    "discord-api-types": "^0.37.79",
+    "eslint": "^8.57.0",
+    "nodemon": "^3.1.0"
+  }
+}

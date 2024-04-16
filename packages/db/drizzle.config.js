@@ -1,4 +1,4 @@
-import env from './src/utils/env';
+import env from '@/env';
 
 export default {
   schema: './schema/**/*',
