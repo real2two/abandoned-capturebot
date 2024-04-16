@@ -26,7 +26,7 @@ app.post('/interactions', async (req, res) => {
   return events[interaction.type]?.execute({
     interaction,
     respond: (message) => {
-      res.json(_.mapKeys(message, (_value, key) => _.snakeCase(key))); // Puts response into snake case
+      return res.json(_.mapKeys(message, (_value, key) => _.snakeCase(key))); // Puts response into snake case
     },
     res,
     req,

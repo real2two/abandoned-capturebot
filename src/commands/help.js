@@ -8,8 +8,8 @@ export default new Command({
     .setName('help')
     .setDescription('Get the list of commands'),
 
-  execute: ({ interaction, res }) => {
-    return res.json({
+  execute: ({ respond }) => {
+    return respond({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
         content: 'Hello world',
