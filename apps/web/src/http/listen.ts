@@ -1,8 +1,9 @@
 import env from '@/env';
 import events from '../utils/events';
 
+import crypto from 'crypto';
 import HyperExpress from 'hyper-express';
-import { verifyKey } from 'discord-interactions';
+import { verify } from 'discord-verify/node';
 import { objectToCamel, objectToSnake } from 'ts-case-convert';
 import { CamelizedInteraction } from '../types/InteractionRequest';
 
@@ -13,16 +14,20 @@ app.post('/interactions', async (req, res) => {
   const signature = req.header('X-Signature-Ed25519');
   const timestamp = req.header('X-Signature-Timestamp');
 
-  const isValidRequest = verifyKey(
-    await req.buffer(),
+  const body = await req.text();
+
+  const isValid = await verify(
+    body,
     signature,
     timestamp,
     env.DiscordPublicKey,
+    crypto.webcrypto.subtle,
   );
-  if (!isValidRequest) return res.status(401).send('Bad request signature');
+
+  if (!isValid) return res.status(401).send('Invalid signature');
 
   // Handles interactions
-  const interaction = objectToCamel(await req.json()) as CamelizedInteraction; // Camelizes the request body
+  const interaction = objectToCamel(JSON.parse(body)) as CamelizedInteraction; // Camelizes the request body
   try {
     return events[interaction.type]?.execute({
       interaction,

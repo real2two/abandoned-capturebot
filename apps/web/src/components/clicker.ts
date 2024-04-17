@@ -35,7 +35,8 @@ export default new Component({
       return respond({
         type: InteractionResponseType.UpdateMessage,
         data: {
-          content: `🍪 ${fake += Math.floor(Math.random() * 6) + 12} (real count: ${++count})`,
+          content: `🍪 ${(fake +=
+            Math.floor(Math.random() * 6) + 12)} (real count: ${++count})`,
         },
       });
     }, clickerCooldown);
