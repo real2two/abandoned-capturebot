@@ -10,4 +10,11 @@ export default {
   DatabaseUser: process.env.DATABASE_USER!,
   DatabasePassword: process.env.DATABASE_PASSWORD!,
   DatabaseName: process.env.DATABASE_NAME!,
+
+  RedisNameSpace: process.env.REDIS_NAMESPACE!,
+  RedisPort: parseInt(process.env.REDIS_PORT!) || 6379,
+  RedisHost: process.env.REDIS_HOST ?? '127.0.0.1',
+  RedisUsername: process.env.REDIS_USERNAME,
+  RedisPassword: process.env.REDIS_PASSWORD,
+  RedisDatabase: parseInt(process.env.REDIS_DB!) || 0,
 };

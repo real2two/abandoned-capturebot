@@ -2,6 +2,7 @@ import commands from '../utils/commands';
 import Event from '../structures/Event';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
+import type { InteractionRequestDataWithUser } from '../types/InteractionRequest';
 
 export default new Event({
   execute: (data) => {
@@ -15,6 +16,7 @@ export default new Event({
         `Cannot find autocomplete command with ID: ${data.interaction.data?.name} (Is it in src/utils/commands.ts?)`,
       );
     }
-    return command?.autocomplete?.(data);
+    if (!data.user) return; // Makes sure 'user' is defined
+    return command?.autocomplete?.(data as InteractionRequestDataWithUser);
   },
 });

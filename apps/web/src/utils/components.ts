@@ -1,4 +1,3 @@
-import buttonComponent from '../components/button';
-import submitComponent from '../components/submit';
+import clickerComponent from '../components/clicker';
 
-export default [buttonComponent, submitComponent];
+export default [clickerComponent];

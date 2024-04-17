@@ -16,19 +16,6 @@ export default new Command({
       type: InteractionResponseType.ChannelMessageWithSource,
       data: {
         content: 'Hello world',
-        components: [
-          {
-            type: ComponentType.ActionRow,
-            components: [
-              {
-                type: ComponentType.Button,
-                style: ButtonStyle.Primary,
-                label: 'press me',
-                customId: 'button',
-              },
-            ],
-          },
-        ],
       },
     });
   },

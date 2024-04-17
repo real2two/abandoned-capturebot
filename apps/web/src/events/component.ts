@@ -1,6 +1,8 @@
 import components from '../utils/components';
 import Event from '../structures/Event';
 
+import type { InteractionRequestDataWithUser } from '../types/InteractionRequest';
+
 export default new Event({
   execute: (data) => {
     const component = components.find((c) =>
@@ -11,6 +13,7 @@ export default new Event({
         `Cannot find component with ID: ${data.interaction.data.customId} (Is it in src/utils/components.ts?)`,
       );
     }
-    return component.execute(data);
+    if (!data.user) return; // Makes sure 'user' is defined
+    return component?.execute(data as InteractionRequestDataWithUser);
   },
 });

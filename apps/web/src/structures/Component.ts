@@ -1,8 +1,8 @@
-import type { InteractionRequest } from '../types/InteractionRequest';
+import type { InteractionRequestWithUser } from '../types/InteractionRequest';
 
 export default class Component {
   customId: RegExp;
-  execute: InteractionRequest;
+  execute: InteractionRequestWithUser;
   /**
    * Create a component
    * @param data The component data
@@ -10,7 +10,7 @@ export default class Component {
   constructor({
     customId,
     execute,
-  }: { customId: RegExp; execute: InteractionRequest }) {
+  }: { customId: RegExp; execute: InteractionRequestWithUser }) {
     this.customId = customId;
     this.execute = execute;
   }

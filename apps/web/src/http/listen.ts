@@ -26,6 +26,7 @@ app.post('/interactions', async (req, res) => {
   try {
     return events[interaction.type]?.execute({
       interaction,
+      user: interaction.member?.user || interaction.user,
       respond: (message) => {
         return res.json(objectToSnake(message)); // Puts response into snake case
       },

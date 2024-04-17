@@ -21,8 +21,8 @@
     "ext": "ts, js"
   },
   "dependencies": {
-    "@/db": "workspace:*",
     "@/env": "workspace:*",
+    "@/utils": "workspace:*",
     "@discordjs/builders": "^1.7.0",
     "tsx": "^4.7.2",
     "typescript": "^5.4.5",

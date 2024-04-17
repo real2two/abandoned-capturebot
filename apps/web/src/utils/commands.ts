@@ -1,3 +1,4 @@
 import helpCommand from '../commands/help';
+import clickerCommand from '../commands/clicker';
 
-export default [helpCommand];
+export default [helpCommand, clickerCommand];

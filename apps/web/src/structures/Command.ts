@@ -1,10 +1,10 @@
 import type { SlashCommandBuilder } from '@discordjs/builders';
-import type { InteractionRequest } from '../types/InteractionRequest';
+import type { InteractionRequestWithUser } from '../types/InteractionRequest';
 
 export default class Command {
   data: SlashCommandBuilder;
-  autocomplete?: InteractionRequest;
-  execute?: InteractionRequest;
+  autocomplete?: InteractionRequestWithUser;
+  execute?: InteractionRequestWithUser;
   /**
    * Create a command
    * @param data The command data
@@ -15,8 +15,8 @@ export default class Command {
     execute,
   }: {
     data: SlashCommandBuilder;
-    autocomplete?: InteractionRequest;
-    execute?: InteractionRequest;
+    autocomplete?: InteractionRequestWithUser;
+    execute?: InteractionRequestWithUser;
   }) {
     this.data = data;
     this.autocomplete = autocomplete;
