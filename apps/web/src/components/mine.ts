@@ -3,14 +3,13 @@ import { getCooldown, setCooldown } from '@/utils';
 
 import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
 
-let count = 0;
-let fake = 0;
-
 const clickerCooldown = 300; // 0.3 seconds
 
+let count = 0;
+
 export default new Component({
-  customId: /^clicker$/,
-  execute: async ({ user, respond }) => {
+  customId: /^mine:.*$/,
+  execute: async ({ interaction, user, respond }) => {
     // Checks cooldown
     if (await getCooldown('clicker', user.id)) {
       return respond({
@@ -29,16 +28,19 @@ export default new Component({
       expiresIn: clickerCooldown,
     });
 
-    // Sends the message
-    // The timeout is to prevent interaction failed
-    setTimeout(() => {
-      return respond({
-        type: InteractionResponseType.UpdateMessage,
-        data: {
-          content: `🍪 ${(fake +=
-            Math.floor(Math.random() * 6) + 12)} (real count: ${++count})`,
-        },
-      });
-    }, clickerCooldown);
+    const customId = interaction.data?.customId;
+
+    if (customId === 'mine:forward') {
+      // Sends the mine forward message
+      // The timeout is to prevent interaction failed
+      setTimeout(() => {
+        return respond({
+          type: InteractionResponseType.UpdateMessage,
+          data: {
+            content: `⛏️ ${++count}`,
+          },
+        });
+      }, clickerCooldown);
+    }
   },
 });

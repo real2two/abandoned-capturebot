@@ -1,3 +1,3 @@
-import clickerComponent from '../components/clicker';
+import mineComponent from '../components/mine';
 
-export default [clickerComponent];
+export default [mineComponent];
