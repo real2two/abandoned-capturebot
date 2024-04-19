@@ -1,5 +1,5 @@
 import type { SlashCommandBuilder } from '@discordjs/builders';
-import type { InteractionRequestWithUser } from '../types/InteractionRequest';
+import type { InteractionRequestWithUser } from '../types/interaction';
 
 export default class Command {
   data: SlashCommandBuilder;

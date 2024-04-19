@@ -1,4 +1,4 @@
-import type { InteractionRequest } from '../types/InteractionRequest';
+import type { InteractionRequest } from '../types/interaction';
 
 export default class Event {
   execute: InteractionRequest;

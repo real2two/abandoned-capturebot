@@ -19,7 +19,7 @@
     "@biomejs/biome": "^1.7.0",
     "turbo": "^1.13.2"
   },
-  "packageManager": "pnpm@9.0.1",
+  "packageManager": "pnpm@9.0.4",
   "engines": {
     "node": ">=18"
   }

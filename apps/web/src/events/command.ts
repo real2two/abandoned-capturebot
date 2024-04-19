@@ -2,7 +2,7 @@ import commands from '../utils/commands';
 import Event from '../structures/Event';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import type { InteractionRequestDataWithUser } from '../types/InteractionRequest';
+import type { InteractionRequestDataWithUser } from '../types/interaction';
 
 export default new Event({
   execute: (data) => {

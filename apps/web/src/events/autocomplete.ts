@@ -2,14 +2,12 @@ import commands from '../utils/commands';
 import Event from '../structures/Event';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import type { InteractionRequestDataWithUser } from '../types/InteractionRequest';
+import type { InteractionRequestDataWithUser } from '../types/interaction';
 
 export default new Event({
   execute: (data) => {
     const command = commands.find(
-      (c) =>
-        c.data instanceof SlashCommandBuilder &&
-        c.data.name === data.interaction.data?.name,
+      (c) => c.data instanceof SlashCommandBuilder && c.data.name === data.interaction.data?.name,
     );
     if (!command) {
       return console.warn(

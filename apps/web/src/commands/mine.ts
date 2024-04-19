@@ -1,11 +1,7 @@
 import Command from '../structures/Command';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import {
-  ButtonStyle,
-  ComponentType,
-  InteractionResponseType,
-} from 'discord-api-types/v10';
+import { ButtonStyle, ComponentType, InteractionResponseType } from 'discord-api-types/v10';
 
 export default new Command({
   data: new SlashCommandBuilder()

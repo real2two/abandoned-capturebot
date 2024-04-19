@@ -17,13 +17,9 @@ export function setCooldown({
   userId,
   expiresIn,
 }: { action: string; userId: string; expiresIn: number }) {
-  return redis.set(
-    `${subNamespace}${action}:${userId}`,
-    Date.now() + expiresIn,
-    {
-      expiresIn,
-    },
-  );
+  return redis.set(`${subNamespace}${action}:${userId}`, Date.now() + expiresIn, {
+    expiresIn,
+  });
 }
 
 export async function endCooldown(action: string, user: string) {
