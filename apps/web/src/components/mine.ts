@@ -45,8 +45,6 @@ export default new Component({
                 author: { name: 'test' },
                 image: {
                   url: 'attachment://image.webp',
-                  width: 325, // This doesn't work
-                  height: 450, // This also doesn't work
                 },
               },
             ],
