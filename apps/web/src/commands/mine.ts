@@ -12,6 +12,16 @@ export default new Command({
       type: InteractionResponseType.ChannelMessageWithSource,
       data: {
         content: `⛏️ {{count}}`,
+        // embeds: [
+        //   {
+        //     author: { name: 'test' },
+        //     image: {
+        //       url: 'attachment://image.webp',
+        //       width: 325,
+        //       height: 450,
+        //     },
+        //   },
+        // ],
         components: [
           {
             type: ComponentType.ActionRow,

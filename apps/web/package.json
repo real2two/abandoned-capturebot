@@ -21,12 +21,14 @@
     "ext": "ts, js"
   },
   "dependencies": {
+    "@/canvas": "workspace:*",
     "@/env": "workspace:*",
     "@/utils": "workspace:*",
     "@discordjs/builders": "^1.7.0",
     "discord-verify": "^1.2.0",
     "dotenv-cli": "^7.4.1",
-    "form-data": "^4.0.0",
+    "form-data-encoder": "^4.0.2",
+    "formdata-node": "^6.0.3",
     "hyper-express": "^6.15.2",
     "ts-case-convert": "^2.0.7",
     "tsx": "^4.7.2",
@@ -35,6 +37,7 @@
   "devDependencies": {
     "@/eslint-config": "workspace:*",
     "@/tsconfig": "workspace:*",
+    "@types/node": "^20.11.30",
     "discord-api-types": "^0.37.79",
     "eslint": "^8.57.0",
     "nodemon": "^3.1.0"

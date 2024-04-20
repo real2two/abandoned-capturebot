@@ -2,10 +2,12 @@ import env from '@/env';
 import events from '../utils/events';
 
 import crypto from 'crypto';
-import FormData from 'form-data';
 import HyperExpress from 'hyper-express';
 import { verify } from 'discord-verify/node';
 import { objectToCamel, objectToSnake } from 'ts-case-convert';
+import { FormData } from 'formdata-node';
+import { FormDataEncoder } from 'form-data-encoder';
+import { Readable } from 'stream';
 
 import type { RESTAPIAttachment } from 'discord-api-types/v10';
 import type { CamelizedInteraction, InteractionResponseAttachment } from '../types';
@@ -66,14 +68,18 @@ app.post('/interactions', async (req, res) => {
 
           // Append the files
           for (let i = 0; i < attachments.length; ++i) {
-            formData.append(`files[${i}]`, attachments[i].file);
+            formData.append(`files[${i}]`, new Blob([attachments[i].file]));
           }
 
+          // Create the encoder and readable
+          const encoder = new FormDataEncoder(formData);
+          const readable = Readable.from(encoder);
+
           // Sets the correct headers
-          res.setHeader('Content-Type', `multipart/form-data; boundary=${formData.getBoundary()}`);
+          res.header('content-type', encoder.headers['content-type']);
 
           // Responds with attachments (multipart/form-data)
-          return formData.pipe(res);
+          return res.stream(readable);
         }
 
         // Responds normally (application/json)

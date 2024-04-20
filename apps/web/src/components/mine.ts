@@ -1,7 +1,8 @@
 import Component from '../structures/Component';
-import { getCooldown, setCooldown } from '@/utils';
 
 import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
+import { getCooldown, setCooldown } from '@/utils';
+import { createMineScene } from '@/canvas';
 
 const clickerCooldown = 300; // 0.3 seconds
 
@@ -33,11 +34,28 @@ export default new Component({
     if (customId === 'mine:forward') {
       // Sends the mine forward message
       // The timeout is to prevent interaction failed
+
       setTimeout(() => {
         return respond({
           type: InteractionResponseType.UpdateMessage,
           data: {
             content: `⛏️ ${++count}`,
+            embeds: [ // You can put this in mine.ts as well with 0 problems
+              {
+                author: { name: 'test' },
+                image: {
+                  url: 'attachment://image.webp',
+                  width: 325,
+                  height: 450,
+                },
+              },
+            ],
+            attachments: [
+              {
+                name: 'image.webp',
+                file: createMineScene(),
+              },
+            ],
           },
         });
       }, clickerCooldown);
