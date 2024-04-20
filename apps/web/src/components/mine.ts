@@ -40,7 +40,8 @@ export default new Component({
           type: InteractionResponseType.UpdateMessage,
           data: {
             content: `⛏️ ${++count}`,
-            embeds: [ // You can put this in mine.ts as well with 0 problems
+            embeds: [
+              // You can put this in mine.ts as well with 0 problems
               {
                 author: { name: 'test' },
                 image: {
