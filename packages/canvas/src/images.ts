@@ -14,4 +14,7 @@ export default {
     '4': await load('avatars/4.png'),
     '5': await load('avatars/5.png'),
   },
+  emojis: {
+    rock: await load('emojis/rock.svg'),
+  }
 };

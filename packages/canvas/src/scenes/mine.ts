@@ -42,26 +42,41 @@ export async function createMineScene({
     for (let y = 0; y < 9; ++y) {
       if (x === 4) {
         if (y >= 6) break;
-        ctx.fillStyle = '#666666';
-        ctx.fillRect(x * gridBlockSize, y * gridBlockSize, gridBlockSize, gridBlockSize);
 
-        ctx.strokeStyle = '#333333';
-        ctx.strokeRect(x * gridBlockSize, y * gridBlockSize, gridBlockSize, gridBlockSize);
+        const rockX = x * gridBlockSize + gridBlockSize * 0.175;
+        const rockY = y * gridBlockSize + gridBlockSize * 0.175;
+        const rockSize = gridBlockSize * .7;
+
+        ctx.drawImage(Images.emojis.rock, rockX, rockY, rockSize, rockSize);
       }
     }
   }
 
   // Draw the character
+  const playerX = gridBlockSize * 4;
+  const playerY = gridBlockSize * 6;
+  const playerCircleX = gridBlockSize * 4.5;
+  const playerCircleY = gridBlockSize * 6.5;
+  const playerCircleSize = gridBlockSize / 2;
   const defaultAvatarNumber = ((BigInt(userId) >> 22n) % 6n).toString() as DefaultAvatarNumber;
   const avatarImage = avatar
     ? await loadImage(`https://cdn.discordapp.com/avatars/${userId}/${avatar}`)
     : Images.avatars[defaultAvatarNumber];
 
-  ctx.fillStyle = 'white';
-  ctx.drawImage(avatarImage, gridBlockSize * 4, gridBlockSize * 6, gridBlockSize, gridBlockSize);
+  ctx.save();
+
+  ctx.beginPath();
+  ctx.arc(playerCircleX, playerCircleY, playerCircleSize, 0, Math.PI * 2);
+  ctx.clip();
+
+  ctx.drawImage(avatarImage, playerX, playerY, gridBlockSize, gridBlockSize);
 
   ctx.strokeStyle = 'black';
-  ctx.strokeRect(gridBlockSize * 4, gridBlockSize * 6, gridBlockSize, gridBlockSize);
+  ctx.beginPath();
+  ctx.arc(playerCircleX, playerCircleY, playerCircleSize, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.restore();
 
   // Fill in unwalkable areas
   for (let x = 0; x < 9; ++x) {
