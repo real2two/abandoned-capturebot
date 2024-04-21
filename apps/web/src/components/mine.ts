@@ -32,6 +32,9 @@ export default new Component({
     const customId = interaction.data?.customId;
 
     if (customId === 'mine:forward') {
+      // Create the scene before sending the message
+      const scene = createMineScene();
+
       // Sends the mine forward message
       // The timeout is to prevent interaction failed
       setTimeout(() => {
@@ -51,7 +54,7 @@ export default new Component({
             attachments: [
               {
                 name: 'image.webp',
-                file: createMineScene(),
+                file: scene,
               },
             ],
           },
