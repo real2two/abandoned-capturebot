@@ -33,7 +33,10 @@ export default new Component({
 
     if (customId === 'mine:forward') {
       // Create the scene before sending the message
-      const scene = createMineScene();
+      const scene = await createMineScene({
+        userId: user.id,
+        avatar: user.avatar,
+      });
 
       // Sends the mine forward message
       // The timeout is to prevent interaction failed

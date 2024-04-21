@@ -8,7 +8,7 @@ export default new Command({
   data: new SlashCommandBuilder()
     .setName('mine')
     .setDescription('Gain resources through clicking buttons'),
-  execute: ({ respond }) => {
+  execute: async ({ user, respond }) => {
     return respond({
       type: InteractionResponseType.ChannelMessageWithSource,
       data: {
@@ -24,7 +24,10 @@ export default new Command({
         attachments: [
           {
             name: 'image.webp',
-            file: createMineScene(),
+            file: await createMineScene({
+              userId: user.id,
+              avatar: user.avatar,
+            }),
           },
         ],
         components: [
