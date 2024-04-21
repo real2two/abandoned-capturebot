@@ -49,7 +49,15 @@ export async function createMineScene({
         const rockWidth = gridBlockSize * 0.6;
         const rockHeight = gridBlockSize * 0.6;
 
-        ctx.drawImage(Images.emojis.coloredRock, rockX, rockY, rockWidth, rockHeight);
+        const rockReversed = !!Math.round(Math.random()); // TODO: This should be based on the map data in the future!
+
+        ctx.save();
+        ctx.translate(rockX + rockWidth / 2, rockY);
+        if (rockReversed) {
+          ctx.scale(-1, 1);
+        }
+        ctx.drawImage(Images.emojis.coloredRock, -rockWidth / 2, 0, rockWidth, rockHeight);
+        ctx.restore();
       }
     }
   }
