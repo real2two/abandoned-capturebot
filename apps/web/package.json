@@ -16,7 +16,7 @@
   },
   "nodemonConfig": {
     "ignore": [".git", "node_modules"],
-    "watch": ["./src"],
+    "watch": ["../../"],
     "exec": "npm start",
     "ext": "ts, js"
   },
@@ -25,6 +25,7 @@
     "@/env": "workspace:*",
     "@/utils": "workspace:*",
     "@discordjs/builders": "^1.7.0",
+    "@discordjs/rest": "^2.2.0",
     "discord-verify": "^1.2.0",
     "dotenv-cli": "^7.4.1",
     "form-data-encoder": "^4.0.2",
