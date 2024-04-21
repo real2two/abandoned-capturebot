@@ -49,7 +49,7 @@ export async function createMineScene({
         const rockWidth = gridBlockSize * 0.6;
         const rockHeight = gridBlockSize * 0.6;
 
-        ctx.drawImage(Images.emojis.rock, rockX, rockY, rockWidth, rockHeight);
+        ctx.drawImage(Images.emojis.coloredRock, rockX, rockY, rockWidth, rockHeight);
       }
     }
   }
@@ -68,18 +68,10 @@ export async function createMineScene({
     : Images.avatars[defaultAvatarNumber];
 
   ctx.save();
-
   ctx.beginPath();
   ctx.arc(playerCircleX, playerCircleY, playerCircleSize, 0, Math.PI * 2);
   ctx.clip();
-
   ctx.drawImage(avatarImage, playerX, playerY, playerSize, playerSize);
-
-  ctx.strokeStyle = 'black';
-  ctx.beginPath();
-  ctx.arc(playerCircleX, playerCircleY, playerCircleSize, 0, Math.PI * 2);
-  ctx.stroke();
-
   ctx.restore();
 
   // Fill in unwalkable areas
