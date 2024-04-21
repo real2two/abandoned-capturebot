@@ -16,5 +16,5 @@ export default {
   },
   emojis: {
     rock: await load('emojis/rock.svg'),
-  }
+  },
 };

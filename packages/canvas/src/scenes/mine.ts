@@ -31,9 +31,9 @@ export async function createMineScene({
     ctx.moveTo(x * gridBlockSize, 0);
     ctx.lineTo(x * gridBlockSize, canvas.height);
   }
-  for (let x = 0; x < 9; ++x) {
-    ctx.moveTo(0, x * gridBlockSize);
-    ctx.lineTo(canvas.width, x * gridBlockSize);
+  for (let y = 0; y < 9; ++y) {
+    ctx.moveTo(0, y * gridBlockSize);
+    ctx.lineTo(canvas.width, y * gridBlockSize);
   }
   ctx.stroke();
 
@@ -43,21 +43,25 @@ export async function createMineScene({
       if (x === 4) {
         if (y >= 6) break;
 
-        const rockX = x * gridBlockSize + gridBlockSize * 0.175;
-        const rockY = y * gridBlockSize + gridBlockSize * 0.175;
-        const rockSize = gridBlockSize * .7;
+        // ((1 - .6) / 2) = 0.2
+        const rockX = gridBlockSize * (x + 0.2);
+        const rockY = gridBlockSize * (y + 0.2);
+        const rockWidth = gridBlockSize * 0.6;
+        const rockHeight = gridBlockSize * 0.6;
 
-        ctx.drawImage(Images.emojis.rock, rockX, rockY, rockSize, rockSize);
+        ctx.drawImage(Images.emojis.rock, rockX, rockY, rockWidth, rockHeight);
       }
     }
   }
 
   // Draw the character
-  const playerX = gridBlockSize * 4;
-  const playerY = gridBlockSize * 6;
+  const playerX = gridBlockSize * 4.075;
+  const playerY = gridBlockSize * 6.075;
+  const playerSize = gridBlockSize * 0.85;
   const playerCircleX = gridBlockSize * 4.5;
   const playerCircleY = gridBlockSize * 6.5;
-  const playerCircleSize = gridBlockSize / 2;
+  const playerCircleSize = gridBlockSize * 0.425; // 0.5 * 0.85
+
   const defaultAvatarNumber = ((BigInt(userId) >> 22n) % 6n).toString() as DefaultAvatarNumber;
   const avatarImage = avatar
     ? await loadImage(`https://cdn.discordapp.com/avatars/${userId}/${avatar}`)
@@ -69,7 +73,7 @@ export async function createMineScene({
   ctx.arc(playerCircleX, playerCircleY, playerCircleSize, 0, Math.PI * 2);
   ctx.clip();
 
-  ctx.drawImage(avatarImage, playerX, playerY, gridBlockSize, gridBlockSize);
+  ctx.drawImage(avatarImage, playerX, playerY, playerSize, playerSize);
 
   ctx.strokeStyle = 'black';
   ctx.beginPath();
