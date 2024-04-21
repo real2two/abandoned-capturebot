@@ -1,25 +1,31 @@
 import Images from '../images';
 import { setupCanvas } from '../canvas';
 import { loadImage } from '@napi-rs/canvas';
+import { MineSnapshotBlockId, MineSnapshotRows } from '@/utils';
 import type { DefaultAvatarNumber } from '../types';
 
-export async function createMineScene({
+export async function renderMineScene({
   userId,
   avatar,
+  snapshot,
 }: {
   userId: string;
   avatar: string | null;
+  snapshot: MineSnapshotRows;
 }) {
   // Create the canvas
   const { canvas, ctx, createImage } = setupCanvas(576, 576);
   const gridBlockSize = 64;
 
-  // Black: #000000
-  // White: #FFFFFF
-  // Light gray: #DEDEDE
-  // Gray: #C8C8C8
-  // Dark gray: #666666
-  // Darker gray: #333333
+  /*
+  Colors:
+    Black: #000000
+    White: #FFFFFF
+    Light gray: #DEDEDE
+    Gray: #C8C8C8
+    Dark gray: #666666
+    Darker gray: #333333
+  */
 
   // Fill the background
   ctx.fillStyle = '#DEDEDE';
@@ -37,57 +43,58 @@ export async function createMineScene({
   }
   ctx.stroke();
 
-  // Fill in places with rocks
-  for (let x = 0; x < 9; ++x) {
-    for (let y = 0; y < 9; ++y) {
-      if (x === 4) {
-        if (y >= 6) break;
+  // Determine the "visual" snapshot here
+  for (let row = 0; row < snapshot.length; ++row) {
+    for (let column = 0; column < snapshot[row].length; ++column) {
+      const block = snapshot[row][column];
+      switch (block.blockId) {
+        case MineSnapshotBlockId.Player: {
+          // Draw the character
+          const playerX = gridBlockSize * (column + 0.075);
+          const playerY = gridBlockSize * (row + 0.075);
+          const playerSize = gridBlockSize * 0.85;
+          const playerCircleX = gridBlockSize * (column + 0.5);
+          const playerCircleY = gridBlockSize * (row + 0.5);
+          const playerCircleSize = gridBlockSize * 0.425; // 0.5 * 0.85
 
-        // ((1 - .6) / 2) = 0.2
-        const rockX = gridBlockSize * (x + 0.2);
-        const rockY = gridBlockSize * (y + 0.2);
-        const rockWidth = gridBlockSize * 0.6;
-        const rockHeight = gridBlockSize * 0.6;
+          const defaultAvatarNumber = (
+            (BigInt(userId) >> 22n) %
+            6n
+          ).toString() as DefaultAvatarNumber;
+          const avatarImage = avatar
+            ? await loadImage(`https://cdn.discordapp.com/avatars/${userId}/${avatar}`)
+            : Images.avatars[defaultAvatarNumber];
 
-        const rockReversed = !!Math.round(Math.random()); // TODO: This should be based on the map data in the future!
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(playerCircleX, playerCircleY, playerCircleSize, 0, Math.PI * 2);
+          ctx.clip();
+          ctx.drawImage(avatarImage, playerX, playerY, playerSize, playerSize);
+          ctx.restore();
 
-        ctx.save();
-        ctx.translate(rockX + rockWidth / 2, rockY);
-        if (rockReversed) {
-          ctx.scale(-1, 1);
+          break;
         }
-        ctx.drawImage(Images.emojis.coloredRock, -rockWidth / 2, 0, rockWidth, rockHeight);
-        ctx.restore();
+        case MineSnapshotBlockId.Wall: {
+          ctx.fillStyle = '#C8C8C8';
+          ctx.fillRect(column * gridBlockSize, row * gridBlockSize, gridBlockSize, gridBlockSize);
+
+          break;
+        }
+        case MineSnapshotBlockId.Rock: {
+          const rockX = gridBlockSize * (column + 0.2);
+          const rockY = gridBlockSize * (row + 0.2);
+          const rockWidth = gridBlockSize * 0.6;
+          const rockHeight = gridBlockSize * 0.6;
+
+          ctx.save();
+          ctx.translate(rockX + rockWidth / 2, rockY);
+          if (block.reversed) ctx.scale(-1, 1);
+          ctx.drawImage(Images.emojis.coloredRock, -rockWidth / 2, 0, rockWidth, rockHeight);
+          ctx.restore();
+
+          break;
+        }
       }
-    }
-  }
-
-  // Draw the character
-  const playerX = gridBlockSize * 4.075;
-  const playerY = gridBlockSize * 6.075;
-  const playerSize = gridBlockSize * 0.85;
-  const playerCircleX = gridBlockSize * 4.5;
-  const playerCircleY = gridBlockSize * 6.5;
-  const playerCircleSize = gridBlockSize * 0.425; // 0.5 * 0.85
-
-  const defaultAvatarNumber = ((BigInt(userId) >> 22n) % 6n).toString() as DefaultAvatarNumber;
-  const avatarImage = avatar
-    ? await loadImage(`https://cdn.discordapp.com/avatars/${userId}/${avatar}`)
-    : Images.avatars[defaultAvatarNumber];
-
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(playerCircleX, playerCircleY, playerCircleSize, 0, Math.PI * 2);
-  ctx.clip();
-  ctx.drawImage(avatarImage, playerX, playerY, playerSize, playerSize);
-  ctx.restore();
-
-  // Fill in unwalkable areas
-  for (let x = 0; x < 9; ++x) {
-    for (let y = 0; y < 9; ++y) {
-      if (x === 4) break;
-      ctx.fillStyle = '#C8C8C8';
-      ctx.fillRect(x * gridBlockSize, y * gridBlockSize, gridBlockSize, gridBlockSize);
     }
   }
 

@@ -17,6 +17,7 @@
     "eslint": "^8.57.0"
   },
   "dependencies": {
+    "@/utils": "workspace:*",
     "@napi-rs/canvas": "^0.1.52"
   }
 }

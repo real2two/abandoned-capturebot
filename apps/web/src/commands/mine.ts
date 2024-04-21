@@ -1,21 +1,33 @@
 import Command from '../structures/Command';
+import rest from '../utils/rest';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { ButtonStyle, ComponentType, InteractionResponseType } from 'discord-api-types/v10';
-import { createMineScene } from '@/canvas';
+import {
+  ButtonStyle,
+  ComponentType,
+  InteractionResponseType,
+  RESTGetAPIWebhookResult,
+  Routes,
+} from 'discord-api-types/v10';
+import { renderMineScene } from '@/canvas';
+import { getUser, setMineActiveMessage } from '@/utils';
+
+import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
 
 export default new Command({
   data: new SlashCommandBuilder()
     .setName('mine')
     .setDescription('Gain resources through clicking buttons'),
-  execute: async ({ user, respond }) => {
-    return respond({
+  execute: async ({ user, interaction, respond }) => {
+    // Send the mine map
+    const player = await getUser(user.id);
+    await respond({
       type: InteractionResponseType.ChannelMessageWithSource,
       data: {
-        content: `⛏️ {{count}}`,
+        content: `⛏️ ${player.mineSteps}`,
         embeds: [
           {
-            author: { name: 'test' },
+            author: { name: 'Mine' },
             image: {
               url: 'attachment://image.webp',
             },
@@ -24,9 +36,10 @@ export default new Command({
         attachments: [
           {
             name: 'image.webp',
-            file: await createMineScene({
+            file: await renderMineScene({
               userId: user.id,
               avatar: user.avatar,
+              snapshot: player.mineSnapshot,
             }),
           },
         ],
@@ -59,5 +72,12 @@ export default new Command({
         ],
       },
     });
+
+    // Set the active mine message
+    const message = (await rest.get(
+      Routes.webhookMessage(interaction.applicationId, interaction.token),
+    )) as ObjectToCamel<RESTGetAPIWebhookResult>;
+
+    await setMineActiveMessage(user.id, message.id);
   },
 });

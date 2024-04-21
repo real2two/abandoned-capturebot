@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@/db": "workspace:*",
-    "@/redis": "workspace:*"
+    "@/redis": "workspace:*",
+    "drizzle-orm": "^0.30.4"
   },
   "devDependencies": {
     "@/eslint-config": "workspace:*",

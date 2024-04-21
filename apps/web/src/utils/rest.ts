@@ -1,13 +1,15 @@
 import env from '@/env';
-import { objectToSnake } from 'ts-case-convert';
+import { objectToCamel, objectToSnake } from 'ts-case-convert';
 import { REST, RequestData, RouteLike } from '@discordjs/rest';
 
 export class CamelizedREST extends REST {
-  get(fullRoute: RouteLike, options?: RequestData) {
-    return super.get(fullRoute, {
-      ...options,
-      body: options?.body ? objectToSnake(options.body) : undefined,
-    });
+  async get(fullRoute: RouteLike, options?: RequestData) {
+    return objectToCamel(
+      (await super.get(fullRoute, {
+        ...options,
+        body: options?.body ? objectToSnake(options.body) : undefined,
+      })) as any,
+    ) as unknown;
   }
 
   delete(fullRoute: RouteLike, options?: RequestData) {
