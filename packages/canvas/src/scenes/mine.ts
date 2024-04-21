@@ -17,7 +17,9 @@ export async function createMineScene({
   // Black: #000000
   // White: #FFFFFF
   // Light gray: #DEDEDE
-  // Dark gray: #C8C8C8
+  // Gray: #C8C8C8
+  // Dark gray: #666666
+  // Darker gray: #333333
 
   // Fill the background
   ctx.fillStyle = '#DEDEDE';
@@ -36,11 +38,16 @@ export async function createMineScene({
   ctx.stroke();
 
   // Fill in places with rocks
-  ctx.fillStyle = '#C8C8C8';
   for (let x = 0; x < 9; ++x) {
     for (let y = 0; y < 9; ++y) {
-      if (x === 4) break;
-      ctx.fillRect(x * gridBlockSize, y * gridBlockSize, gridBlockSize, gridBlockSize);
+      if (x === 4) {
+        if (y >= 6) break;
+        ctx.fillStyle = '#666666';
+        ctx.fillRect(x * gridBlockSize, y * gridBlockSize, gridBlockSize, gridBlockSize);
+
+        ctx.strokeStyle = '#333333';
+        ctx.strokeRect(x * gridBlockSize, y * gridBlockSize, gridBlockSize, gridBlockSize);
+      }
     }
   }
 
@@ -55,6 +62,15 @@ export async function createMineScene({
 
   ctx.strokeStyle = 'black';
   ctx.strokeRect(gridBlockSize * 4, gridBlockSize * 6, gridBlockSize, gridBlockSize);
+
+  // Fill in unwalkable areas
+  for (let x = 0; x < 9; ++x) {
+    for (let y = 0; y < 9; ++y) {
+      if (x === 4) break;
+      ctx.fillStyle = '#C8C8C8';
+      ctx.fillRect(x * gridBlockSize, y * gridBlockSize, gridBlockSize, gridBlockSize);
+    }
+  }
 
   // Create the image
   return createImage();
