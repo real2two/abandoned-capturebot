@@ -37,7 +37,7 @@ app.post('/interactions', async (req, res) => {
     return events[interaction.type]?.execute({
       interaction,
       user: interaction.member?.user || interaction.user,
-      respond: (message) => {
+      respond: async (message) => {
         // @ts-ignore If message.data.attachments is a value, the message has attachments
         if (message?.data?.attachments) {
           // @ts-ignore Create the form data
@@ -60,7 +60,7 @@ app.post('/interactions', async (req, res) => {
               type: message.type,
               data: {
                 // @ts-ignore
-                ...message.data,
+                ...objectToSnake(message.data),
                 attachments: messageAttachments,
               },
             }),
@@ -79,7 +79,10 @@ app.post('/interactions', async (req, res) => {
           res.header('content-type', encoder.headers['content-type']);
 
           // Responds with attachments (multipart/form-data)
-          return res.stream(readable);
+          return await new Promise((resolve) => {
+            res.on('close', resolve);
+            res.stream(readable);
+          });
         }
 
         // Responds normally (application/json)

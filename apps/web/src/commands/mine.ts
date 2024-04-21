@@ -2,6 +2,7 @@ import Command from '../structures/Command';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { ButtonStyle, ComponentType, InteractionResponseType } from 'discord-api-types/v10';
+import { createMineScene } from '@/canvas';
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -12,16 +13,20 @@ export default new Command({
       type: InteractionResponseType.ChannelMessageWithSource,
       data: {
         content: `⛏️ {{count}}`,
-        // embeds: [
-        //   {
-        //     author: { name: 'test' },
-        //     image: {
-        //       url: 'attachment://image.webp',
-        //       width: 325,
-        //       height: 450,
-        //     },
-        //   },
-        // ],
+        embeds: [
+          {
+            author: { name: 'test' },
+            image: {
+              url: 'attachment://image.webp',
+            },
+          },
+        ],
+        attachments: [
+          {
+            name: 'image.webp',
+            file: createMineScene(),
+          },
+        ],
         components: [
           {
             type: ComponentType.ActionRow,

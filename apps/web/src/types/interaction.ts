@@ -13,7 +13,7 @@ export interface InteractionResponseAttachment {
 export interface InteractionRequestData {
   interaction: CamelizedInteraction;
   user?: ObjectToCamel<APIUser>;
-  respond: (message: InteractionResponse) => unknown;
+  respond: (message: InteractionResponse) => Promise<unknown>;
   res: HyperExpress.Response<HyperExpress.DefaultResponseLocals>;
   req: HyperExpress.Request<HyperExpress.DefaultRequestLocals>;
 }
