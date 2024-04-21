@@ -34,7 +34,6 @@ export default new Component({
     if (customId === 'mine:forward') {
       // Sends the mine forward message
       // The timeout is to prevent interaction failed
-
       setTimeout(() => {
         return respond({
           type: InteractionResponseType.UpdateMessage,
