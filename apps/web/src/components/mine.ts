@@ -41,7 +41,7 @@ export default new Component({
     }
 
     // Checks cooldown
-    if (await getCooldown('clicker', user.id)) {
+    if (await getCooldown('component:mine', user.id)) {
       return respond({
         type: InteractionResponseType.ChannelMessageWithSource,
         data: {
@@ -53,7 +53,7 @@ export default new Component({
 
     // Sets the cooldown (anti-cheat)
     await setCooldown({
-      action: 'clicker',
+      action: 'component:mine',
       userId: user.id,
       expiresIn: clickerCooldown,
     });
