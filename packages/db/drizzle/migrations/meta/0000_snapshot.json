@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "4c83d6a1-9be8-4663-ab1f-ac71659e21c8",
+  "id": "b68359f0-e2cd-4e05-8453-316117d4f8c1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "users": {
@@ -14,8 +14,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "mined": {
-          "name": "mined",
+        "currency_rocks": {
+          "name": "currency_rocks",
           "type": "int unsigned",
           "primaryKey": false,
           "notNull": true,
@@ -28,6 +28,22 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "mine_totalclicks": {
+          "name": "mine_totalclicks",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "mine_totalupwardclicks": {
+          "name": "mine_totalupwardclicks",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
         }
       },
       "indexes": {},

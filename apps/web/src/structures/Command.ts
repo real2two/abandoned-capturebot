@@ -2,7 +2,7 @@ import type { SlashCommandBuilder } from '@discordjs/builders';
 import type { InteractionRequestWithUser } from '../types/interaction';
 
 export default class Command {
-  data: SlashCommandBuilder;
+  data: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>;
   autocomplete?: InteractionRequestWithUser;
   execute?: InteractionRequestWithUser;
   /**
@@ -14,7 +14,7 @@ export default class Command {
     autocomplete,
     execute,
   }: {
-    data: SlashCommandBuilder;
+    data: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>;
     autocomplete?: InteractionRequestWithUser;
     execute?: InteractionRequestWithUser;
   }) {

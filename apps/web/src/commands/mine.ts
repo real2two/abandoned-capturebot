@@ -23,7 +23,7 @@ export default new Command({
       data: await createMineMessage({
         user,
         snapshot: player.mineSnapshot,
-        mined: player.mined,
+        currencyRocks: player.currencyRocks,
         canMove,
         setLoadingComponents: true,
       }),

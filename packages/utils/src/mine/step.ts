@@ -32,11 +32,11 @@ export function findPlayer(snapshot: MineSnapshotRows) {
  */
 export function nextMineStep({
   direction,
-  mined,
+  currencyRocks,
   snapshot,
 }: {
   direction: 'left' | 'up' | 'right';
-  mined: number;
+  currencyRocks: number;
   snapshot: MineSnapshotRows;
 }) {
   // Create a new snapshot object, so it doesn't replace the older one
@@ -70,7 +70,7 @@ export function nextMineStep({
         finished = true;
 
         if (snapshot[newRow][newColumn].blockId === MineSnapshotBlockId.Rock) {
-          mined++;
+          currencyRocks++;
         }
 
         snapshot[row][column] = { blockId: MineSnapshotBlockId.None };
@@ -89,7 +89,7 @@ export function nextMineStep({
 
   // Returns the new mine data
   return {
-    mined,
+    currencyRocks,
     snapshot: newSnapshot,
   };
 }

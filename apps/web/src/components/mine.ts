@@ -75,31 +75,27 @@ export default new Component({
       });
     }
 
-    const { mined, snapshot } = nextMineStep({
+    const { currencyRocks, snapshot } = nextMineStep({
       direction,
-      mined: player.mined,
+      currencyRocks: player.currencyRocks,
       snapshot: player.mineSnapshot,
     });
 
     const { canMove: newCanMove } = findPlayer(snapshot);
 
     await updateUser(user.id, {
-      mined,
+      currencyRocks,
       mineSnapshot: snapshot,
-    });
 
-    // Create the scene before sending the message
-    const scene = await renderMineScene({
-      userId: user.id,
-      avatar: user.avatar,
-      snapshot,
+      mineTotalClicks: player.mineTotalClicks + 1,
+      mineTotalUpwardClicks: player.mineTotalUpwardClicks + Number(direction === 'up'),
     });
 
     // Creates the message
     const message = await createMineMessage({
       user,
       snapshot,
-      mined,
+      currencyRocks,
       canMove: newCanMove,
     });
 

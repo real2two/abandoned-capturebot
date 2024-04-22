@@ -1,5 +1,5 @@
 import { renderMineScene } from '@/canvas';
-import { loadingEmojiId, type MineSnapshotRows } from '@/utils';
+import { BLUE_COLOR, loadingEmojiId, type MineSnapshotRows } from '@/utils';
 import { ButtonStyle, ComponentType } from 'discord-api-types/v10';
 
 import type { CamelizedCustomAPIInteractionResponseCallbackData, CamelizedUser } from '../../types';
@@ -7,13 +7,13 @@ import type { CamelizedCustomAPIInteractionResponseCallbackData, CamelizedUser }
 export async function createMineMessage({
   user,
   snapshot,
-  mined,
+  currencyRocks,
   canMove,
   setLoadingComponents = false,
 }: {
   user: CamelizedUser;
   snapshot: MineSnapshotRows;
-  mined: number;
+  currencyRocks: number;
   canMove: {
     left: boolean;
     up: boolean;
@@ -25,8 +25,11 @@ export async function createMineMessage({
     content: `<@!${user.id}>`,
     embeds: [
       {
+        color: BLUE_COLOR,
         title: 'Mining',
-        description: `You have **🪨 ${mined} rock${mined === 1 ? '' : 's'}** currently.`,
+        description: `You have **🪨 ${currencyRocks} rock${
+          currencyRocks === 1 ? '' : 's'
+        }** currently.`,
         image: {
           url: 'attachment://image.webp',
         },

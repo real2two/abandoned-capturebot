@@ -17,3 +17,4 @@ const res = await fetch(`https://discord.com/api/applications/${env.DiscordClien
 });
 
 console.log(await res.json());
+process.exit();
