@@ -43,7 +43,7 @@ export function nextMineStep({
   const newSnapshot = [...snapshot];
 
   // If player moves forward, adds the new block to the top
-  if (direction === 'up') {
+  if (direction === 'up' && newSnapshot.length <= 9) {
     newSnapshot.unshift(...createMineRows(newSnapshot));
   }
 
@@ -101,7 +101,21 @@ export function nextMineStep({
 function createMineRows(snapshot: MineSnapshotRows): MineSnapshotRows {
   const rn = Math.random();
 
-  if (rn < 0.3) {
+  if (rn < 0.6) {
+    return [
+      [
+        { blockId: MineSnapshotBlockId.Wall },
+        { blockId: MineSnapshotBlockId.Wall },
+        { blockId: MineSnapshotBlockId.None },
+        { blockId: MineSnapshotBlockId.None },
+        { blockId: MineSnapshotBlockId.None },
+        { blockId: MineSnapshotBlockId.None },
+        { blockId: MineSnapshotBlockId.None },
+        { blockId: MineSnapshotBlockId.Wall },
+        { blockId: MineSnapshotBlockId.Wall },
+      ],
+    ];
+  } else if (rn < 0.3) {
     return [
       [
         { blockId: MineSnapshotBlockId.Wall },
@@ -110,6 +124,17 @@ function createMineRows(snapshot: MineSnapshotRows): MineSnapshotRows {
         { blockId: MineSnapshotBlockId.None },
         { blockId: MineSnapshotBlockId.None },
         { blockId: MineSnapshotBlockId.None },
+        { blockId: MineSnapshotBlockId.Wall },
+        { blockId: MineSnapshotBlockId.Wall },
+        { blockId: MineSnapshotBlockId.Wall },
+      ],
+      [
+        { blockId: MineSnapshotBlockId.Wall },
+        { blockId: MineSnapshotBlockId.Wall },
+        { blockId: MineSnapshotBlockId.Wall },
+        { blockId: MineSnapshotBlockId.Rock, reversed: false },
+        { blockId: MineSnapshotBlockId.None },
+        { blockId: MineSnapshotBlockId.Rock, reversed: true },
         { blockId: MineSnapshotBlockId.Wall },
         { blockId: MineSnapshotBlockId.Wall },
         { blockId: MineSnapshotBlockId.Wall },

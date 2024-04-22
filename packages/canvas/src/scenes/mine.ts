@@ -50,9 +50,9 @@ export async function renderMineScene({
   ctx.stroke();
 
   // Determine the "visual" snapshot here
-  for (let row = 0; row < snapshot.length; ++row) {
+  for (let row = 0; row < 9; ++row) {
     for (let column = 0; column < snapshot[row].length; ++column) {
-      const block = snapshot[row][column];
+      const block = snapshot[row + snapshot.length - 9][column];
       switch (block.blockId) {
         case MineSnapshotBlockId.Player: {
           // Draw the character
