@@ -29,7 +29,7 @@ export default new Command({
       }),
     });
 
-    // Set the active mine message
+    // Set the active mine message ID
     const message = (await rest.patch(
       Routes.webhookMessage(interaction.applicationId, interaction.token),
       {
