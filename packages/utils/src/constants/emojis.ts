@@ -1,1 +1,1 @@
-export const loadingEmojiId = '1231782440088109197';
+export const LOADING_EMOJI_ID = '1231842783678042142';

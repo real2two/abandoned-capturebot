@@ -1,5 +1,5 @@
 import { renderMineScene } from '@/canvas';
-import { BLUE_COLOR, loadingEmojiId, type MineSnapshotRows } from '@/utils';
+import { BLUE_COLOR, LOADING_EMOJI_ID, type MineSnapshotRows } from '@/utils';
 import { ButtonStyle, ComponentType } from 'discord-api-types/v10';
 
 import type { CamelizedCustomAPIInteractionResponseCallbackData, CamelizedUser } from '../../types';
@@ -70,21 +70,21 @@ export function createMineMessageComponents({
         {
           type: ComponentType.Button,
           style: ButtonStyle.Secondary,
-          emoji: setLoadingComponents ? { id: loadingEmojiId } : { name: '◀️' },
+          emoji: setLoadingComponents ? { id: LOADING_EMOJI_ID } : { name: '◀️' },
           customId: 'mine:left',
           disabled: setLoadingComponents || !canMove.left,
         },
         {
           type: ComponentType.Button,
           style: ButtonStyle.Secondary,
-          emoji: setLoadingComponents ? { id: loadingEmojiId } : { name: '🔼' },
+          emoji: setLoadingComponents ? { id: LOADING_EMOJI_ID } : { name: '🔼' },
           customId: 'mine:up',
           disabled: setLoadingComponents || !canMove.up,
         },
         {
           type: ComponentType.Button,
           style: ButtonStyle.Secondary,
-          emoji: setLoadingComponents ? { id: loadingEmojiId } : { name: '▶️' },
+          emoji: setLoadingComponents ? { id: LOADING_EMOJI_ID } : { name: '▶️' },
           customId: 'mine:right',
           disabled: setLoadingComponents || !canMove.right,
         },
