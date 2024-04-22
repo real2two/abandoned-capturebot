@@ -1,11 +1,6 @@
 import Component from '../structures/Component';
 
-import {
-  ButtonStyle,
-  ComponentType,
-  InteractionResponseType,
-  MessageFlags,
-} from 'discord-api-types/v10';
+import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
 import {
   findPlayer,
   getCooldown,

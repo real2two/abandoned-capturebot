@@ -1,4 +1,4 @@
-import { ONE_DAY } from '../time';
+import { ONE_DAY } from '../constants';
 import * as redis from '@/redis';
 
 const subNamespace = 'mineActiveMessage';

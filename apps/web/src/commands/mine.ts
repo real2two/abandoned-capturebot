@@ -2,16 +2,9 @@ import Command from '../structures/Command';
 import rest from '../utils/rest';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import {
-  ButtonStyle,
-  ComponentType,
-  InteractionResponseType,
-  RESTGetAPIWebhookResult,
-  Routes,
-} from 'discord-api-types/v10';
-import { renderMineScene } from '@/canvas';
+import { InteractionResponseType, RESTPatchAPIWebhookResult, Routes } from 'discord-api-types/v10';
 import { getUser, findPlayer, setMineActiveMessage } from '@/utils';
-import { createMineMessage } from '../utils/messages';
+import { createMineMessage, createMineMessageComponents } from '../utils/messages';
 
 import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
 
@@ -32,14 +25,21 @@ export default new Command({
         snapshot: player.mineSnapshot,
         mined: player.mined,
         canMove,
+        setLoadingComponents: true,
       }),
     });
 
     // Set the active mine message
-    const message = (await rest.get(
+    const message = (await rest.patch(
       Routes.webhookMessage(interaction.applicationId, interaction.token),
-    )) as ObjectToCamel<RESTGetAPIWebhookResult>;
-
+      {
+        body: {
+          components: createMineMessageComponents({
+            canMove,
+          }),
+        },
+      },
+    )) as ObjectToCamel<RESTPatchAPIWebhookResult>;
     await setMineActiveMessage(user.id, message.id);
   },
 });

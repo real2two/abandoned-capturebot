@@ -1,14 +1,15 @@
 import { renderMineScene } from '@/canvas';
+import { loadingEmojiId, type MineSnapshotRows } from '@/utils';
 import { ButtonStyle, ComponentType } from 'discord-api-types/v10';
 
 import type { CamelizedCustomAPIInteractionResponseCallbackData, CamelizedUser } from '../../types';
-import type { MineSnapshotRows } from '@/utils';
 
 export async function createMineMessage({
   user,
   snapshot,
   mined,
   canMove,
+  setLoadingComponents = false,
 }: {
   user: CamelizedUser;
   snapshot: MineSnapshotRows;
@@ -18,6 +19,7 @@ export async function createMineMessage({
     up: boolean;
     right: boolean;
   };
+  setLoadingComponents?: boolean;
 }): Promise<CamelizedCustomAPIInteractionResponseCallbackData> {
   return {
     content: `<@!${user.id}>`,
@@ -40,33 +42,50 @@ export async function createMineMessage({
         }),
       },
     ],
-    components: [
-      {
-        type: ComponentType.ActionRow,
-        components: [
-          {
-            type: ComponentType.Button,
-            style: ButtonStyle.Secondary,
-            emoji: { name: '◀️' },
-            customId: 'mine:left',
-            disabled: !canMove.left,
-          },
-          {
-            type: ComponentType.Button,
-            style: ButtonStyle.Secondary,
-            emoji: { name: '🔼' },
-            customId: 'mine:up',
-            disabled: !canMove.up,
-          },
-          {
-            type: ComponentType.Button,
-            style: ButtonStyle.Secondary,
-            emoji: { name: '▶️' },
-            customId: 'mine:right',
-            disabled: !canMove.right,
-          },
-        ],
-      },
-    ],
+    components: createMineMessageComponents({
+      canMove,
+      setLoadingComponents,
+    }),
   };
+}
+
+export function createMineMessageComponents({
+  canMove,
+  setLoadingComponents = false,
+}: {
+  canMove: {
+    left: boolean;
+    up: boolean;
+    right: boolean;
+  };
+  setLoadingComponents?: boolean;
+}): CamelizedCustomAPIInteractionResponseCallbackData['components'] {
+  return [
+    {
+      type: ComponentType.ActionRow,
+      components: [
+        {
+          type: ComponentType.Button,
+          style: ButtonStyle.Secondary,
+          emoji: setLoadingComponents ? { id: loadingEmojiId } : { name: '◀️' },
+          customId: 'mine:left',
+          disabled: setLoadingComponents || !canMove.left,
+        },
+        {
+          type: ComponentType.Button,
+          style: ButtonStyle.Secondary,
+          emoji: setLoadingComponents ? { id: loadingEmojiId } : { name: '🔼' },
+          customId: 'mine:up',
+          disabled: setLoadingComponents || !canMove.up,
+        },
+        {
+          type: ComponentType.Button,
+          style: ButtonStyle.Secondary,
+          emoji: setLoadingComponents ? { id: loadingEmojiId } : { name: '▶️' },
+          customId: 'mine:right',
+          disabled: setLoadingComponents || !canMove.right,
+        },
+      ],
+    },
+  ];
 }

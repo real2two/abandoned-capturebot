@@ -12,32 +12,40 @@ export class CamelizedREST extends REST {
     ) as unknown;
   }
 
-  delete(fullRoute: RouteLike, options?: RequestData) {
-    return super.delete(fullRoute, {
-      ...options,
-      body: options?.body ? objectToSnake(options.body) : undefined,
-    });
+  async delete(fullRoute: RouteLike, options?: RequestData) {
+    return objectToCamel(
+      (await super.delete(fullRoute, {
+        ...options,
+        body: options?.body ? objectToSnake(options.body) : undefined,
+      })) as any,
+    ) as unknown;
   }
 
-  post(fullRoute: RouteLike, options?: RequestData) {
-    return super.post(fullRoute, {
-      ...options,
-      body: options?.body ? objectToSnake(options.body) : undefined,
-    });
+  async post(fullRoute: RouteLike, options?: RequestData) {
+    return objectToCamel(
+      (await super.post(fullRoute, {
+        ...options,
+        body: options?.body ? objectToSnake(options.body) : undefined,
+      })) as any,
+    ) as unknown;
   }
 
-  put(fullRoute: RouteLike, options?: RequestData) {
-    return super.put(fullRoute, {
-      ...options,
-      body: options?.body ? objectToSnake(options.body) : undefined,
-    });
+  async put(fullRoute: RouteLike, options?: RequestData) {
+    return objectToCamel(
+      (await super.put(fullRoute, {
+        ...options,
+        body: options?.body ? objectToSnake(options.body) : undefined,
+      })) as any,
+    ) as unknown;
   }
 
-  patch(fullRoute: RouteLike, options?: RequestData) {
-    return super.patch(fullRoute, {
-      ...options,
-      body: options?.body ? objectToSnake(options.body) : undefined,
-    });
+  async patch(fullRoute: RouteLike, options?: RequestData) {
+    return objectToCamel(
+      (await super.patch(fullRoute, {
+        ...options,
+        body: options?.body ? objectToSnake(options.body) : undefined,
+      })) as any,
+    ) as unknown;
   }
 }
 
