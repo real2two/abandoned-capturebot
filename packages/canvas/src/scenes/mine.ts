@@ -17,6 +17,12 @@ export async function renderMineScene({
   const { canvas, ctx, createImage } = setupCanvas(576, 576);
   const gridBlockSize = 64;
 
+  // Load avatar
+  const defaultAvatarNumber = ((BigInt(userId) >> 22n) % 6n).toString() as DefaultAvatarNumber;
+  const avatarImage = avatar
+    ? await loadImage(`https://cdn.discordapp.com/avatars/${userId}/${avatar}`)
+    : Images.avatars[defaultAvatarNumber];
+
   /*
   Colors:
     Black: #000000
@@ -56,14 +62,6 @@ export async function renderMineScene({
           const playerCircleX = gridBlockSize * (column + 0.5);
           const playerCircleY = gridBlockSize * (row + 0.5);
           const playerCircleSize = gridBlockSize * 0.425; // 0.5 * 0.85
-
-          const defaultAvatarNumber = (
-            (BigInt(userId) >> 22n) %
-            6n
-          ).toString() as DefaultAvatarNumber;
-          const avatarImage = avatar
-            ? await loadImage(`https://cdn.discordapp.com/avatars/${userId}/${avatar}`)
-            : Images.avatars[defaultAvatarNumber];
 
           ctx.save();
           ctx.beginPath();

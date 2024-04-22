@@ -10,7 +10,7 @@ import {
   Routes,
 } from 'discord-api-types/v10';
 import { renderMineScene } from '@/canvas';
-import { getUser, setMineActiveMessage } from '@/utils';
+import { getUser, findPlayer, setMineActiveMessage } from '@/utils';
 
 import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
 
@@ -19,12 +19,15 @@ export default new Command({
     .setName('mine')
     .setDescription('Gain resources through clicking buttons'),
   execute: async ({ user, interaction, respond }) => {
-    // Send the mine map
+    // Fetch player
     const player = await getUser(user.id);
+    const { canMove } = findPlayer(player.mineSnapshot);
+
+    // Send the mine map
     await respond({
       type: InteractionResponseType.ChannelMessageWithSource,
       data: {
-        content: `⛏️ ${player.mineSteps}`,
+        content: `⛏️ ${player.mined}`,
         embeds: [
           {
             author: { name: 'Mine' },
@@ -52,20 +55,21 @@ export default new Command({
                 style: ButtonStyle.Secondary,
                 emoji: { name: '◀️' },
                 customId: 'mine:left',
-                disabled: true,
+                disabled: !canMove.left,
               },
               {
                 type: ComponentType.Button,
                 style: ButtonStyle.Secondary,
                 emoji: { name: '🔼' },
-                customId: 'mine:forward',
+                customId: 'mine:up',
+                disabled: !canMove.up,
               },
               {
                 type: ComponentType.Button,
                 style: ButtonStyle.Secondary,
                 emoji: { name: '▶️' },
                 customId: 'mine:right',
-                disabled: true,
+                disabled: !canMove.right,
               },
             ],
           },

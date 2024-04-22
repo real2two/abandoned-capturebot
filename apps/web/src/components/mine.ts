@@ -1,7 +1,14 @@
 import Component from '../structures/Component';
 
-import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
 import {
+  ButtonStyle,
+  ComponentType,
+  InteractionResponseType,
+  MessageFlags,
+} from 'discord-api-types/v10';
+
+import {
+  findPlayer,
   getCooldown,
   getMineActiveMessage,
   getUser,
@@ -57,52 +64,93 @@ export default new Component({
     });
 
     const customId = interaction.data?.customId;
+    const direction = customId.slice('mine:'.length) as 'up' | 'left' | 'right';
 
-    if (customId === 'mine:forward') {
-      // Update player's mine data
-      const player = await getUser(user.id);
-      const { steps, snapshot } = nextMineStep({
-        currentSteps: player.mineSteps,
-        snapshot: player.mineSnapshot,
+    const player = await getUser(user.id);
+    const { canMove } = findPlayer(player.mineSnapshot);
+
+    // Update player's mine data
+    if (!canMove[direction]) {
+      return respond({
+        type: InteractionResponseType.ChannelMessageWithSource,
+        data: {
+          content: `Cannot move ${direction === 'up' ? 'upwards' : direction}`,
+          flags: MessageFlags.Ephemeral,
+        },
       });
-
-      await updateUser(user.id, {
-        mineSteps: steps,
-        mineSnapshot: snapshot,
-      });
-
-      // Create the scene before sending the message
-      const scene = await renderMineScene({
-        userId: user.id,
-        avatar: user.avatar,
-        snapshot,
-      });
-
-      // Sends the mine forward message
-      // The timeout is to prevent interaction failed
-      setTimeout(() => {
-        return respond({
-          type: InteractionResponseType.UpdateMessage,
-          data: {
-            content: `⛏️ ${steps}`,
-            embeds: [
-              // You can put this in mine.ts as well with 0 problems
-              {
-                author: { name: 'test' },
-                image: {
-                  url: 'attachment://image.webp',
-                },
-              },
-            ],
-            attachments: [
-              {
-                name: 'image.webp',
-                file: scene,
-              },
-            ],
-          },
-        });
-      }, clickerCooldown);
     }
+
+    const { mined, snapshot } = nextMineStep({
+      direction,
+      snapshot: player.mineSnapshot,
+    });
+
+    const { canMove: newCanMove } = findPlayer(snapshot);
+
+    await updateUser(user.id, {
+      mined: player.mined + Number(mined),
+      mineSnapshot: snapshot,
+    });
+
+    // Create the scene before sending the message
+    const scene = await renderMineScene({
+      userId: user.id,
+      avatar: user.avatar,
+      snapshot,
+    });
+
+    // Sends the mine forward message
+    // The timeout is to prevent interaction failed
+    setTimeout(() => {
+      return respond({
+        type: InteractionResponseType.UpdateMessage,
+        data: {
+          content: `⛏️ ${player.mined + Number(mined)}`,
+          embeds: [
+            // You can put this in mine.ts as well with 0 problems
+            {
+              author: { name: 'test' },
+              image: {
+                url: 'attachment://image.webp',
+              },
+            },
+          ],
+          attachments: [
+            {
+              name: 'image.webp',
+              file: scene,
+            },
+          ],
+          components: [
+            {
+              type: ComponentType.ActionRow,
+              components: [
+                {
+                  type: ComponentType.Button,
+                  style: ButtonStyle.Secondary,
+                  emoji: { name: '◀️' },
+                  customId: 'mine:left',
+                  disabled: !newCanMove.left,
+                },
+                {
+                  type: ComponentType.Button,
+                  style: ButtonStyle.Secondary,
+                  emoji: { name: '🔼' },
+                  customId: 'mine:up',
+                  disabled: !newCanMove.up,
+                },
+                {
+                  type: ComponentType.Button,
+                  style: ButtonStyle.Secondary,
+                  emoji: { name: '▶️' },
+                  customId: 'mine:right',
+                  disabled: !newCanMove.right,
+                },
+              ],
+            },
+          ],
+        },
+      });
+    }, clickerCooldown);
   },
 });

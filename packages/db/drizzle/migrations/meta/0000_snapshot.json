@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "eaabee6b-b094-42de-8ba8-23e08091c2a8",
+  "id": "4c83d6a1-9be8-4663-ab1f-ac71659e21c8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "users": {
@@ -14,8 +14,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "mine_steps": {
-          "name": "mine_steps",
+        "mined": {
+          "name": "mined",
           "type": "int unsigned",
           "primaryKey": false,
           "notNull": true,

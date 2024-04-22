@@ -18,7 +18,7 @@ export async function getUser(userId: string) {
 export async function createUser(userId: bigint): Promise<typeof schema.users.$inferSelect> {
   const values = {
     userId,
-    mineSteps: 0,
+    mined: 0,
     mineSnapshot: createDefaultMineSnapshot(),
   };
   await db.insert(schema.users).values(values);
