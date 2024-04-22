@@ -6,7 +6,6 @@ import {
   InteractionResponseType,
   MessageFlags,
 } from 'discord-api-types/v10';
-
 import {
   findPlayer,
   getCooldown,
@@ -17,6 +16,7 @@ import {
   updateUser,
 } from '@/utils';
 import { renderMineScene } from '@/canvas';
+import { createMineMessage } from '../utils/messages';
 
 const clickerCooldown = 300; // 0.3 seconds
 
@@ -82,13 +82,14 @@ export default new Component({
 
     const { mined, snapshot } = nextMineStep({
       direction,
+      mined: player.mined,
       snapshot: player.mineSnapshot,
     });
 
     const { canMove: newCanMove } = findPlayer(snapshot);
 
     await updateUser(user.id, {
-      mined: player.mined + Number(mined),
+      mined,
       mineSnapshot: snapshot,
     });
 
@@ -99,57 +100,20 @@ export default new Component({
       snapshot,
     });
 
+    // Creates the message
+    const message = await createMineMessage({
+      user,
+      snapshot,
+      mined,
+      canMove: newCanMove,
+    });
+
     // Sends the mine forward message
     // The timeout is to prevent interaction failed
-    setTimeout(() => {
+    setTimeout(async () => {
       return respond({
         type: InteractionResponseType.UpdateMessage,
-        data: {
-          content: `⛏️ ${player.mined + Number(mined)}`,
-          embeds: [
-            // You can put this in mine.ts as well with 0 problems
-            {
-              author: { name: 'test' },
-              image: {
-                url: 'attachment://image.webp',
-              },
-            },
-          ],
-          attachments: [
-            {
-              name: 'image.webp',
-              file: scene,
-            },
-          ],
-          components: [
-            {
-              type: ComponentType.ActionRow,
-              components: [
-                {
-                  type: ComponentType.Button,
-                  style: ButtonStyle.Secondary,
-                  emoji: { name: '◀️' },
-                  customId: 'mine:left',
-                  disabled: !newCanMove.left,
-                },
-                {
-                  type: ComponentType.Button,
-                  style: ButtonStyle.Secondary,
-                  emoji: { name: '🔼' },
-                  customId: 'mine:up',
-                  disabled: !newCanMove.up,
-                },
-                {
-                  type: ComponentType.Button,
-                  style: ButtonStyle.Secondary,
-                  emoji: { name: '▶️' },
-                  customId: 'mine:right',
-                  disabled: !newCanMove.right,
-                },
-              ],
-            },
-          ],
-        },
+        data: message,
       });
     }, clickerCooldown);
   },

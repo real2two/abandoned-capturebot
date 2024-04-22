@@ -10,6 +10,7 @@ import type {
   APIInteractionResponseUpdateMessage,
   APIModalInteractionResponse,
   APIPremiumRequiredInteractionResponse,
+  APIUser,
 } from 'discord-api-types/v10';
 import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
 import type { InteractionResponseAttachment } from './interaction';
@@ -25,6 +26,10 @@ export type CustomAPIInteractionResponse =
   | APIPremiumRequiredInteractionResponse;
 
 export type CamelizedInteraction = ObjectToCamel<APIBaseInteraction<InteractionType, any>>;
+export type CamelizedUser = ObjectToCamel<APIUser>;
+
+export type CamelizedCustomAPIInteractionResponseCallbackData =
+  ObjectToCamel<CustomAPIInteractionResponseCallbackData>;
 
 export interface CustomAPIInteractionResponseCallbackData
   extends Omit<APIInteractionResponseCallbackData, 'attachments'> {

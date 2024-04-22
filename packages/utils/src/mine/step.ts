@@ -32,9 +32,11 @@ export function findPlayer(snapshot: MineSnapshotRows) {
  */
 export function nextMineStep({
   direction,
+  mined,
   snapshot,
 }: {
   direction: 'left' | 'up' | 'right';
+  mined: number;
   snapshot: MineSnapshotRows;
 }) {
   // Create a new snapshot object, so it doesn't replace the older one
@@ -46,7 +48,6 @@ export function nextMineStep({
   }
 
   // Move the player forward
-  let mined = false;
   let finished = false;
   for (let row = 0; row < snapshot.length; ++row) {
     for (let column = 0; column < snapshot[row].length; ++column) {
@@ -66,8 +67,11 @@ export function nextMineStep({
           throw new Error('The player cannot take a step on the following direction currently');
         }
 
-        mined = snapshot[newRow][newColumn].blockId === MineSnapshotBlockId.Rock;
         finished = true;
+
+        if (snapshot[newRow][newColumn].blockId === MineSnapshotBlockId.Rock) {
+          mined++;
+        }
 
         snapshot[row][column] = { blockId: MineSnapshotBlockId.None };
         snapshot[newRow][newColumn] = { blockId: MineSnapshotBlockId.Player };

@@ -1,7 +1,6 @@
 import type HyperExpress from 'hyper-express';
-import type { APIUser } from 'discord-api-types/v10';
 import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
-import type { CustomAPIInteractionResponse, CamelizedInteraction } from './discord';
+import type { CustomAPIInteractionResponse, CamelizedInteraction, CamelizedUser } from './discord';
 
 export type InteractionResponse = ObjectToCamel<CustomAPIInteractionResponse>;
 
@@ -12,14 +11,14 @@ export interface InteractionResponseAttachment {
 
 export interface InteractionRequestData {
   interaction: CamelizedInteraction;
-  user?: ObjectToCamel<APIUser>;
+  user?: CamelizedUser;
   respond: (message: InteractionResponse) => Promise<unknown>;
   res: HyperExpress.Response<HyperExpress.DefaultResponseLocals>;
   req: HyperExpress.Request<HyperExpress.DefaultRequestLocals>;
 }
 
 export interface InteractionRequestDataWithUser extends InteractionRequestData {
-  user: ObjectToCamel<APIUser>;
+  user: CamelizedUser;
 }
 
 export type InteractionRequest = (data: InteractionRequestData) => unknown;

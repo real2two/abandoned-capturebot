@@ -11,6 +11,7 @@ import {
 } from 'discord-api-types/v10';
 import { renderMineScene } from '@/canvas';
 import { getUser, findPlayer, setMineActiveMessage } from '@/utils';
+import { createMineMessage } from '../utils/messages';
 
 import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
 
@@ -23,58 +24,15 @@ export default new Command({
     const player = await getUser(user.id);
     const { canMove } = findPlayer(player.mineSnapshot);
 
-    // Send the mine map
+    // Send the mine message
     await respond({
       type: InteractionResponseType.ChannelMessageWithSource,
-      data: {
-        content: `⛏️ ${player.mined}`,
-        embeds: [
-          {
-            author: { name: 'Mine' },
-            image: {
-              url: 'attachment://image.webp',
-            },
-          },
-        ],
-        attachments: [
-          {
-            name: 'image.webp',
-            file: await renderMineScene({
-              userId: user.id,
-              avatar: user.avatar,
-              snapshot: player.mineSnapshot,
-            }),
-          },
-        ],
-        components: [
-          {
-            type: ComponentType.ActionRow,
-            components: [
-              {
-                type: ComponentType.Button,
-                style: ButtonStyle.Secondary,
-                emoji: { name: '◀️' },
-                customId: 'mine:left',
-                disabled: !canMove.left,
-              },
-              {
-                type: ComponentType.Button,
-                style: ButtonStyle.Secondary,
-                emoji: { name: '🔼' },
-                customId: 'mine:up',
-                disabled: !canMove.up,
-              },
-              {
-                type: ComponentType.Button,
-                style: ButtonStyle.Secondary,
-                emoji: { name: '▶️' },
-                customId: 'mine:right',
-                disabled: !canMove.right,
-              },
-            ],
-          },
-        ],
-      },
+      data: await createMineMessage({
+        user,
+        snapshot: player.mineSnapshot,
+        mined: player.mined,
+        canMove,
+      }),
     });
 
     // Set the active mine message
