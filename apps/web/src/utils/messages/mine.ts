@@ -20,6 +20,7 @@ export async function createMineMessage({
   };
 }): Promise<CamelizedCustomAPIInteractionResponseCallbackData> {
   return {
+    content: `<@!${user.id}>`,
     embeds: [
       {
         title: 'Mining',
