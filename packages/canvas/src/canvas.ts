@@ -1,12 +1,4 @@
-import { createCanvas } from '@napi-rs/canvas';
-
-export function setupCanvas(width: number, height: number) {
-  const canvas = createCanvas(width, height);
-  const ctx = canvas.getContext('2d');
-
-  return {
-    canvas,
-    ctx,
-    createImage: () => canvas.encodeSync('webp'),
-  };
-}
+export * from './canvas/canvas';
+export * from './canvas/debug';
+export * from './canvas/draw';
+export * from './canvas/map';

@@ -8,6 +8,10 @@ export function empty(): MineSnapshotTileBase {
   return { tileId: MineSnapshotTileId.Empty };
 }
 
+export function player(): MineSnapshotTileBase {
+  return { tileId: MineSnapshotTileId.Player };
+}
+
 export function wall(): MineSnapshotTileBase {
   return { tileId: MineSnapshotTileId.Wall };
 }

@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db, schema } from '@/db';
-import { createDefaultMineSnapshot } from '../mine';
+import { createDefaultMineSnapshot } from '../canvas';
 
 export async function getUser(userId: string) {
   return (await fetchUser(userId)) || (await createUser(BigInt(userId)));
