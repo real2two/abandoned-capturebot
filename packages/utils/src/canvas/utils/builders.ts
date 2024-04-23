@@ -1,4 +1,4 @@
-import { empty, wall, rock } from './tiles';
+import { empty, wall } from './tiles';
 import type { MineSnapshotRows, MineSnapshotColumns, MineSnapshotTile } from '../../types';
 
 export function emptyRow() {

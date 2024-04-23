@@ -10,9 +10,53 @@ export default new Command({
     await respond({
       type: InteractionResponseType.ChannelMessageWithSource,
       data: {
+        content: 'Debug',
+        embeds: [
+          {
+            image: {
+              url: 'attachment://image.webp',
+            },
+          },
+          {
+            image: {
+              url: 'attachment://image2.webp',
+            },
+          },
+          {
+            image: {
+              url: 'attachment://image3.webp',
+            },
+          },
+          {
+            image: {
+              url: 'attachment://image4.webp',
+            },
+          },
+          {
+            image: {
+              url: 'attachment://image5.webp',
+            },
+          },
+        ],
         attachments: [
           {
             name: 'image.webp',
+            file: await renderMineDebugScene(),
+          },
+          {
+            name: 'image2.webp',
+            file: await renderMineDebugScene(),
+          },
+          {
+            name: 'image3.webp',
+            file: await renderMineDebugScene(),
+          },
+          {
+            name: 'image4.webp',
+            file: await renderMineDebugScene(),
+          },
+          {
+            name: 'image5.webp',
             file: await renderMineDebugScene(),
           },
         ],
