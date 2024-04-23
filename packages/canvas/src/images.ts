@@ -5,6 +5,8 @@ const __dirname = getDirname(import.meta.url);
 
 const load = (file: string) => loadImage(`${__dirname}/images/${file}`);
 
+// TODO: Use a tilemap
+
 export default {
   avatars: {
     '0': await load('avatars/0.png'),
