@@ -12,7 +12,11 @@ import {
 } from '@/utils';
 import { createMineMessage } from '../utils/messages';
 
-const clickerCooldown = 350; // 0.35 seconds
+// This is the mine cooldown
+// The mine cooldown should always be above 200ms to prevent rate limit problems
+// Also, there's an issue on Discord with embeds being slow at loading images, so keep that in mind
+const cooldownName = 'component:mine';
+const clickerCooldown = 450; // 0.45 seconds
 
 export default new Component({
   customId: /^mine:.*$/,
@@ -40,7 +44,7 @@ export default new Component({
     }
 
     // Checks cooldown
-    if (await getCooldown('component:mine', user.id)) {
+    if (await getCooldown(cooldownName, user.id)) {
       return respond({
         type: InteractionResponseType.ChannelMessageWithSource,
         data: {
@@ -52,7 +56,7 @@ export default new Component({
 
     // Sets the cooldown (anti-cheat)
     await setCooldown({
-      action: 'component:mine',
+      action: cooldownName,
       userId: user.id,
       expiresIn: clickerCooldown,
     });
