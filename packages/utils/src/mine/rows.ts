@@ -1,4 +1,5 @@
-import { MineSnapshotBlockId, type MineSnapshotRows } from '@/db';
+import { type MineSnapshotRows } from '../types';
+import { createEmptyTile, createTileWall, createTileRock } from './utils/mineBuilders';
 
 /**
  * Create a mine row
@@ -7,58 +8,58 @@ import { MineSnapshotBlockId, type MineSnapshotRows } from '@/db';
 export function createMineRows(snapshot: MineSnapshotRows): MineSnapshotRows {
   const rn = Math.random();
 
-  if (rn < 0.6) {
+  if (rn < 0.3) {
     return [
       [
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.None },
-        { blockId: MineSnapshotBlockId.None },
-        { blockId: MineSnapshotBlockId.None },
-        { blockId: MineSnapshotBlockId.None },
-        { blockId: MineSnapshotBlockId.None },
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.Wall },
+        createTileWall(),
+        createTileWall(),
+        createEmptyTile(),
+        createEmptyTile(),
+        createEmptyTile(),
+        createEmptyTile(),
+        createEmptyTile(),
+        createTileWall(),
+        createTileWall(),
       ],
     ];
-  } else if (rn < 0.3) {
+  } else if (rn < 0.6) {
     return [
       [
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.None },
-        { blockId: MineSnapshotBlockId.None },
-        { blockId: MineSnapshotBlockId.None },
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.Wall },
+        createTileWall(),
+        createTileWall(),
+        createTileWall(),
+        createEmptyTile(),
+        createEmptyTile(),
+        createEmptyTile(),
+        createTileWall(),
+        createTileWall(),
+        createTileWall(),
       ],
       [
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.Rock, reversed: false },
-        { blockId: MineSnapshotBlockId.None },
-        { blockId: MineSnapshotBlockId.Rock, reversed: true },
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.Wall },
-        { blockId: MineSnapshotBlockId.Wall },
+        createTileWall(),
+        createTileWall(),
+        createTileWall(),
+        createTileRock({ reversed: false }),
+        createEmptyTile(),
+        createTileRock({ reversed: true }),
+        createTileWall(),
+        createTileWall(),
+        createTileWall(),
       ],
     ];
   }
 
   return [
     [
-      { blockId: MineSnapshotBlockId.Wall },
-      { blockId: MineSnapshotBlockId.Wall },
-      { blockId: MineSnapshotBlockId.Wall },
-      { blockId: MineSnapshotBlockId.Wall },
-      { blockId: MineSnapshotBlockId.Rock, reversed: !!Math.round(Math.random()) },
-      { blockId: MineSnapshotBlockId.Wall },
-      { blockId: MineSnapshotBlockId.Wall },
-      { blockId: MineSnapshotBlockId.Wall },
-      { blockId: MineSnapshotBlockId.Wall },
+      createTileWall(),
+      createTileWall(),
+      createTileWall(),
+      createTileWall(),
+      createTileRock(),
+      createTileWall(),
+      createTileWall(),
+      createTileWall(),
+      createTileWall(),
     ],
   ];
 }

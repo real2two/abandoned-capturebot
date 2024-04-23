@@ -1,10 +1,10 @@
-import { MineSnapshotBlockId, type MineSnapshotRows } from '@/db';
+import { MineSnapshotTileId, type MineSnapshotRows } from '@/db';
 import { createMineRows } from './rows';
 
 export function findPlayer(snapshot: MineSnapshotRows) {
   for (let row = 0; row < snapshot.length; ++row) {
     for (let column = 0; column < snapshot[row].length; ++column) {
-      if (snapshot[row][column].blockId === MineSnapshotBlockId.Player) {
+      if (snapshot[row][column].tileId === MineSnapshotTileId.Player) {
         const leftOfPlayer = snapshot[row]?.[column - 1];
         const frontOfPlayer = snapshot[row - 1]?.[column];
         const rightOfPlayer = snapshot[row]?.[column + 1];
@@ -12,11 +12,11 @@ export function findPlayer(snapshot: MineSnapshotRows) {
         return {
           row,
           column,
-          block: snapshot[row][column],
+          tile: snapshot[row][column],
           canMove: {
-            left: leftOfPlayer ? leftOfPlayer.blockId !== MineSnapshotBlockId.Wall : false,
-            up: frontOfPlayer ? frontOfPlayer.blockId !== MineSnapshotBlockId.Wall : false,
-            right: rightOfPlayer ? rightOfPlayer.blockId !== MineSnapshotBlockId.Wall : false,
+            left: leftOfPlayer ? leftOfPlayer.tileId !== MineSnapshotTileId.Wall : false,
+            up: frontOfPlayer ? frontOfPlayer.tileId !== MineSnapshotTileId.Wall : false,
+            right: rightOfPlayer ? rightOfPlayer.tileId !== MineSnapshotTileId.Wall : false,
           },
         };
       }
@@ -43,7 +43,7 @@ export function nextMineStep({
   // Create a new snapshot object, so it doesn't replace the older one
   const newSnapshot = [...snapshot];
 
-  // If player moves forward, adds the new block to the top
+  // If player moves forward, adds the new tile to the top
   if (direction === 'up' && newSnapshot.length <= 9) {
     newSnapshot.unshift(...createMineRows(newSnapshot));
   }
@@ -52,7 +52,7 @@ export function nextMineStep({
   let finished = false;
   for (let row = 0; row < snapshot.length; ++row) {
     for (let column = 0; column < snapshot[row].length; ++column) {
-      if (snapshot[row][column].blockId === MineSnapshotBlockId.Player) {
+      if (snapshot[row][column].tileId === MineSnapshotTileId.Player) {
         // Set the variables
         const { newRow, newColumn } = (() => {
           if (direction === 'left') return { newRow: row, newColumn: column - 1 };
@@ -61,18 +61,18 @@ export function nextMineStep({
         })();
 
         // Disallows the player from going above the canvas and walking into a wall
-        if (!snapshot[row]?.[column] || snapshot[newRow][newColumn].blockId === MineSnapshotBlockId.Wall) {
+        if (!snapshot[row]?.[column] || snapshot[newRow][newColumn].tileId === MineSnapshotTileId.Wall) {
           throw new Error('The player cannot take a step on the following direction currently');
         }
 
         finished = true;
 
-        if (snapshot[newRow][newColumn].blockId === MineSnapshotBlockId.Rock) {
+        if (snapshot[newRow][newColumn].tileId === MineSnapshotTileId.Rock) {
           currencyRocks++;
         }
 
-        snapshot[row][column] = { blockId: MineSnapshotBlockId.None };
-        snapshot[newRow][newColumn] = { blockId: MineSnapshotBlockId.Player };
+        snapshot[row][column] = { tileId: MineSnapshotTileId.Empty };
+        snapshot[newRow][newColumn] = { tileId: MineSnapshotTileId.Player };
 
         break;
       }

@@ -1,7 +1,7 @@
 import Images from '../images';
 import { setupCanvas } from '../canvas';
 import { loadImage } from '@napi-rs/canvas';
-import { MineSnapshotBlockId, MineSnapshotRows } from '@/utils';
+import { MineSnapshotTileId, MineSnapshotRows } from '@/utils';
 import type { DefaultAvatarNumber } from '../types';
 
 export async function renderMineScene({
@@ -15,7 +15,7 @@ export async function renderMineScene({
 }) {
   // Create the canvas
   const { canvas, ctx, createImage } = setupCanvas(576, 576);
-  const gridBlockSize = 64;
+  const gridTileSize = 64;
 
   // Load avatar
   const defaultAvatarNumber = ((BigInt(userId) >> 22n) % 6n).toString() as DefaultAvatarNumber;
@@ -40,28 +40,28 @@ export async function renderMineScene({
   // Draw the grid
   ctx.strokeStyle = '#C8C8C8';
   for (let x = 0; x < 9; ++x) {
-    ctx.moveTo(x * gridBlockSize, 0);
-    ctx.lineTo(x * gridBlockSize, canvas.height);
+    ctx.moveTo(x * gridTileSize, 0);
+    ctx.lineTo(x * gridTileSize, canvas.height);
   }
   for (let y = 0; y < 9; ++y) {
-    ctx.moveTo(0, y * gridBlockSize);
-    ctx.lineTo(canvas.width, y * gridBlockSize);
+    ctx.moveTo(0, y * gridTileSize);
+    ctx.lineTo(canvas.width, y * gridTileSize);
   }
   ctx.stroke();
 
   // Determine the "visual" snapshot here
   for (let row = 0; row < 9; ++row) {
     for (let column = 0; column < snapshot[row].length; ++column) {
-      const block = snapshot[row + snapshot.length - 9][column];
-      switch (block.blockId) {
-        case MineSnapshotBlockId.Player: {
+      const tile = snapshot[row + snapshot.length - 9][column];
+      switch (tile.tileId) {
+        case MineSnapshotTileId.Player: {
           // Draw the character
-          const playerX = gridBlockSize * (column + 0.075);
-          const playerY = gridBlockSize * (row + 0.075);
-          const playerSize = gridBlockSize * 0.85;
-          const playerCircleX = gridBlockSize * (column + 0.5);
-          const playerCircleY = gridBlockSize * (row + 0.5);
-          const playerCircleSize = gridBlockSize * 0.425; // 0.5 * 0.85
+          const playerX = gridTileSize * (column + 0.075);
+          const playerY = gridTileSize * (row + 0.075);
+          const playerSize = gridTileSize * 0.85;
+          const playerCircleX = gridTileSize * (column + 0.5);
+          const playerCircleY = gridTileSize * (row + 0.5);
+          const playerCircleSize = gridTileSize * 0.425; // 0.5 * 0.85
 
           ctx.save();
           ctx.beginPath();
@@ -72,21 +72,21 @@ export async function renderMineScene({
 
           break;
         }
-        case MineSnapshotBlockId.Wall: {
+        case MineSnapshotTileId.Wall: {
           ctx.fillStyle = '#C8C8C8';
-          ctx.fillRect(column * gridBlockSize, row * gridBlockSize, gridBlockSize, gridBlockSize);
+          ctx.fillRect(column * gridTileSize, row * gridTileSize, gridTileSize, gridTileSize);
 
           break;
         }
-        case MineSnapshotBlockId.Rock: {
-          const rockX = gridBlockSize * (column + 0.2);
-          const rockY = gridBlockSize * (row + 0.2);
-          const rockWidth = gridBlockSize * 0.6;
-          const rockHeight = gridBlockSize * 0.6;
+        case MineSnapshotTileId.Rock: {
+          const rockX = gridTileSize * (column + 0.2);
+          const rockY = gridTileSize * (row + 0.2);
+          const rockWidth = gridTileSize * 0.6;
+          const rockHeight = gridTileSize * 0.6;
 
           ctx.save();
           ctx.translate(rockX + rockWidth / 2, rockY);
-          if (block.reversed) ctx.scale(-1, 1);
+          if (tile.reversed) ctx.scale(-1, 1);
           ctx.drawImage(Images.emojis.coloredRock, -rockWidth / 2, 0, rockWidth, rockHeight);
           ctx.restore();
 

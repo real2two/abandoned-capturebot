@@ -1,20 +1,20 @@
 export type MineSnapshotRows = MineSnapshotColumns[];
-export type MineSnapshotColumns = MineSnapshotBlockData[];
+export type MineSnapshotColumns = MineSnapshotTile[];
 
-export enum MineSnapshotBlockId {
-  None = 0,
+export enum MineSnapshotTileId {
+  Empty = 0,
   Player = 1,
   Wall = 2,
   Rock = 3,
 }
 
-export type MineSnapshotBlockData = MineSnapshotBlockDataBase | MineSnapshotBlockDataRock;
+export type MineSnapshotTile = MineSnapshotTileBase | MineSnapshotTileRock;
 
-export interface MineSnapshotBlockDataBase {
-  blockId: MineSnapshotBlockId.None | MineSnapshotBlockId.Player | MineSnapshotBlockId.Wall;
+export interface MineSnapshotTileBase {
+  tileId: MineSnapshotTileId.Empty | MineSnapshotTileId.Player | MineSnapshotTileId.Wall;
 }
 
-export interface MineSnapshotBlockDataRock {
-  blockId: MineSnapshotBlockId.Rock;
+export interface MineSnapshotTileRock {
+  tileId: MineSnapshotTileId.Rock;
   reversed: boolean;
 }
