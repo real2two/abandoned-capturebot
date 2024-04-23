@@ -3,6 +3,7 @@ import { MineSnapshotTile, MineSnapshotTileId } from '@/utils';
 import { gridTileSize } from './canvas';
 
 import type { Canvas, Image, SKRSContext2D } from '@napi-rs/canvas';
+import { drawImageTile } from './image';
 
 export async function drawMineBackground(canvas: Canvas, ctx: SKRSContext2D) {
   // Fill the background
@@ -67,16 +68,7 @@ export async function drawMineTile({
       break;
     }
     case MineSnapshotTileId.Rock: {
-      const rockX = gridTileSize * (x + 0.2);
-      const rockY = gridTileSize * (y + 0.2);
-      const rockWidth = gridTileSize * 0.6;
-      const rockHeight = gridTileSize * 0.6;
-
-      ctx.save();
-      ctx.translate(rockX + rockWidth / 2, rockY);
-      if (tile.reversed) ctx.scale(-1, 1);
-      ctx.drawImage(Images.emojis.coloredRock, -rockWidth / 2, 0, rockWidth, rockHeight);
-      ctx.restore();
+      drawImageTile(ctx, Images.rocks.rock, x, y, { reversed: tile.reversed });
 
       break;
     }
