@@ -10,7 +10,8 @@
     "commands/create": "cd apps/web && pnpm commands/create",
     "schema/push": "cd packages/db && pnpm schema/push",
     "schema/generate": "cd packages/db && pnpm schema/generate",
-    "schema/migrate": "cd packages/db && pnpm schema/migrate"
+    "schema/migrate": "cd packages/db && pnpm schema/migrate",
+    "cloudflared": "cloudflared tunnel run"
   },
   "dependencies": {
     "dotenv-cli": "^7.4.1"

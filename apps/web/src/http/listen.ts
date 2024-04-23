@@ -10,7 +10,7 @@ import { FormDataEncoder } from 'form-data-encoder';
 import { Readable } from 'stream';
 
 import type { RESTAPIAttachment } from 'discord-api-types/v10';
-import type { CamelizedInteraction, InteractionResponseAttachment } from '@/utils/types';
+import type { CamelizedInteraction, InteractionResponseAttachment } from '@/utils';
 
 const app = new HyperExpress.Server();
 
