@@ -16,7 +16,7 @@ cluster.on('exit', (worker) => {
 
 // Spawn in clusters.
 const clusterCount = env.WebsiteClusters || cpus().length;
-for (let i = 0; i < clusterCount; i++) {
+for (let i = 0; i < clusterCount; ++i) {
   createCluster();
 }
 

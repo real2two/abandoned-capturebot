@@ -1,5 +1,5 @@
 import { empty, rock } from './utils/tiles';
-import { cloneRow, oneTile, fiveTiles } from './utils/builders';
+import { cloneRow, leftTiles, rightTiles, oneTile, fiveTiles } from './utils/builders';
 import type { MineSnapshotRows } from '../types';
 
 /**
@@ -11,7 +11,9 @@ export function createMineRows(snapshot: MineSnapshotRows): MineSnapshotRows {
 
   if (rn < 0.3) {
     return [
+      rightTiles([empty(), empty()]),
       fiveTiles([empty(), rock(), empty(), empty(), rock()]),
+      leftTiles([empty(), empty()]),
       oneTile(empty()),
       ...cloneRow(oneTile(rock()), 4),
     ];

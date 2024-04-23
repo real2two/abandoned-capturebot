@@ -7,7 +7,7 @@ export function emptyRow() {
 
 export function cloneRow(tile: MineSnapshotColumns, amount: number) {
   const column: MineSnapshotRows = [];
-  for (let i = 0; i < amount; i++) {
+  for (let i = 0; i < amount; ++i) {
     column.push(tile);
   }
   return column;
@@ -15,10 +15,28 @@ export function cloneRow(tile: MineSnapshotColumns, amount: number) {
 
 export function cloneRows(tiles: MineSnapshotColumns[], amount: number) {
   const column: MineSnapshotRows = [];
-  for (let i = 0; i < amount; i++) {
+  for (let i = 0; i < amount; ++i) {
     column.push(...tiles);
   }
   return column;
+}
+
+export function leftTiles(tiles: MineSnapshotTile[]) {
+  const row: MineSnapshotTile[] = [];
+  for (let i = 0; i < 5 - tiles.length; ++i) {
+    row.push(wall());
+  }
+  row.push(...tiles, wall(), wall(), wall(), wall());
+  return row;
+}
+
+export function rightTiles(tiles: MineSnapshotTile[]) {
+  const row: MineSnapshotTile[] = [];
+  row.push(wall(), wall(), wall(), wall(), ...tiles);
+  for (let i = 0; i < 5 - tiles.length; ++i) {
+    row.push(wall());
+  }
+  return row;
 }
 
 export function wallTile() {

@@ -12,7 +12,7 @@ import {
 } from '@/utils';
 import { createMineMessage } from '../utils/messages';
 
-const clickerCooldown = 300; // 0.3 seconds
+const clickerCooldown = 350; // 0.35 seconds
 
 export default new Component({
   customId: /^mine:.*$/,
