@@ -16,7 +16,7 @@ import { createMineMessage } from '../utils/messages';
 // The mine cooldown should always be above 200ms to prevent rate limit problems
 // Also, there's an issue on Discord with embeds being slow at loading images, so keep that in mind
 const cooldownName = 'component:mine';
-const clickerCooldown = 450; // 0.45 seconds
+const clickerCooldown = 400; // 0.4 seconds
 
 export default new Component({
   customId: /^mine:.*$/,
@@ -69,12 +69,16 @@ export default new Component({
 
     // Update player's mine data
     if (!canMove[direction]) {
+      // In theory, this should never happen, but Discord has an issue where embed images sometimes load too slowly.
+      // When this happens, a message edit is delayed and an edit you've done later may be replaced an earlier edit.
       return respond({
-        type: InteractionResponseType.ChannelMessageWithSource,
-        data: {
-          content: `Cannot move ${direction === 'up' ? 'upwards' : direction}`,
-          flags: MessageFlags.Ephemeral,
-        },
+        type: InteractionResponseType.UpdateMessage,
+        data: await createMineMessage({
+          user,
+          snapshot: player.mineSnapshot,
+          currencyRocks: player.currencyRocks,
+          canMove,
+        }),
       });
     }
 
