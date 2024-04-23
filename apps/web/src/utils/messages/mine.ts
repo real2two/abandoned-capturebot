@@ -2,10 +2,7 @@ import { renderMineScene } from '@/canvas';
 import { BLUE_COLOR, LOADING_EMOJI_ID, type MineSnapshotRows } from '@/utils';
 import { ButtonStyle, ComponentType } from 'discord-api-types/v10';
 
-import type {
-  CamelizedCustomAPIInteractionResponseCallbackData,
-  CamelizedUser,
-} from '@/utils';
+import type { CamelizedCustomAPIInteractionResponseCallbackData, CamelizedUser } from '@/utils';
 
 export async function createMineMessage({
   user,
