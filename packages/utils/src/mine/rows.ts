@@ -1,6 +1,6 @@
-import { type MineSnapshotRows } from '../types';
-import { empty, wall, rock } from './utils/builders';
-import { createBaseRow, createThreeRow, createFiveRow } from './utils/templates';
+import { empty, rock } from './utils/builders';
+import { oneRow, threeRow, fiveRow } from './utils/templates';
+import type { MineSnapshotRows } from '../types';
 
 /**
  * Create a mine row
@@ -10,13 +10,13 @@ export function createMineRows(snapshot: MineSnapshotRows): MineSnapshotRows {
   const rn = Math.random();
 
   if (rn < 0.3) {
-    return [createFiveRow([empty(), rock(), empty(), empty(), rock()])];
+    return [fiveRow([empty(), rock(), empty(), empty(), rock()])];
   } else if (rn < 0.6) {
     return [
-      createThreeRow([empty(), empty(), empty()]),
-      createThreeRow([rock({ reversed: false }), empty(), rock({ reversed: true })]),
+      threeRow([empty(), empty(), empty()]),
+      threeRow([rock({ reversed: false }), empty(), rock({ reversed: true })]),
     ];
   }
 
-  return [createBaseRow(rock())];
+  return [oneRow(rock())];
 }
