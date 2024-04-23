@@ -1,5 +1,5 @@
-import { empty, rock } from './utils/builders';
-import { oneRow, threeRow, fiveRow } from './utils/templates';
+import { empty, rock } from './utils/tiles';
+import { cloneRow, oneTile, fiveTiles } from './utils/builders';
 import type { MineSnapshotRows } from '../types';
 
 /**
@@ -10,13 +10,12 @@ export function createMineRows(snapshot: MineSnapshotRows): MineSnapshotRows {
   const rn = Math.random();
 
   if (rn < 0.3) {
-    return [fiveRow([empty(), rock(), empty(), empty(), rock()])];
-  } else if (rn < 0.6) {
     return [
-      threeRow([empty(), empty(), empty()]),
-      threeRow([rock({ reversed: false }), empty(), rock({ reversed: true })]),
+      fiveTiles([empty(), rock(), empty(), empty(), rock()]),
+      oneTile(empty()),
+      ...cloneRow(oneTile(rock()), 4),
     ];
   }
 
-  return [oneRow(rock())];
+  return [oneTile(rock())];
 }
