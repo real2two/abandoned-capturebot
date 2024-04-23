@@ -4,7 +4,9 @@ export function getUserDisplayName(user: CamelizedUser, member?: CamelizedGuildM
   return (
     member?.nick ||
     user?.globalName ||
-    (user?.username ? `${user?.username}${user?.discriminator !== '0' ? `#${user?.discriminator}` : ''}` : user.id)
+    (user?.username
+      ? `${user?.username}${user?.discriminator !== '0' ? `#${user?.discriminator}` : ''}`
+      : user.id)
   );
 }
 

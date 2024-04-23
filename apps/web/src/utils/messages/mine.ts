@@ -2,7 +2,10 @@ import { renderMineScene } from '@/canvas';
 import { BLUE_COLOR, LOADING_EMOJI_ID, type MineSnapshotRows } from '@/utils';
 import { ButtonStyle, ComponentType } from 'discord-api-types/v10';
 
-import type { CamelizedCustomAPIInteractionResponseCallbackData, CamelizedUser } from '@/utils/types';
+import type {
+  CamelizedCustomAPIInteractionResponseCallbackData,
+  CamelizedUser,
+} from '@/utils/types';
 
 export async function createMineMessage({
   user,
@@ -27,7 +30,9 @@ export async function createMineMessage({
       {
         color: BLUE_COLOR,
         title: 'Mining',
-        description: `You have **🪨 ${currencyRocks} rock${currencyRocks === 1 ? '' : 's'}** currently.`,
+        description: `You have **🪨 ${currencyRocks} rock${
+          currencyRocks === 1 ? '' : 's'
+        }** currently.`,
         image: {
           url: 'attachment://image.webp',
         },

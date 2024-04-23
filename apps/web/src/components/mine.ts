@@ -1,7 +1,15 @@
 import Component from '../structures/Component';
 
 import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
-import { findPlayer, getCooldown, getMineActiveMessage, getUser, nextMineStep, setCooldown, updateUser } from '@/utils';
+import {
+  findPlayer,
+  getCooldown,
+  getMineActiveMessage,
+  getUser,
+  nextMineStep,
+  setCooldown,
+  updateUser,
+} from '@/utils';
 import { createMineMessage } from '../utils/messages';
 
 const clickerCooldown = 300; // 0.3 seconds

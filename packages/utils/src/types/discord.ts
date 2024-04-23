@@ -30,7 +30,8 @@ export type CamelizedInteraction = ObjectToCamel<APIBaseInteraction<InteractionT
 export type CamelizedUser = ObjectToCamel<APIUser>;
 export type CamelizedGuildMember = ObjectToCamel<APIGuildMember>;
 
-export type CamelizedCustomAPIInteractionResponseCallbackData = ObjectToCamel<CustomAPIInteractionResponseCallbackData>;
+export type CamelizedCustomAPIInteractionResponseCallbackData =
+  ObjectToCamel<CustomAPIInteractionResponseCallbackData>;
 
 export interface CustomAPIInteractionResponseCallbackData
   extends Omit<APIInteractionResponseCallbackData, 'attachments'> {
@@ -47,6 +48,7 @@ export interface CustomAPIInteractionResponseDeferredChannelMessageWithSource
   data: Pick<CustomAPIInteractionResponseCallbackData, 'flags'>;
 }
 
-export interface CustomAPIInteractionResponseUpdateMessage extends Omit<APIInteractionResponseUpdateMessage, 'data'> {
+export interface CustomAPIInteractionResponseUpdateMessage
+  extends Omit<APIInteractionResponseUpdateMessage, 'data'> {
   data: CustomAPIInteractionResponseCallbackData;
 }

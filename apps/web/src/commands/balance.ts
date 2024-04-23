@@ -23,7 +23,8 @@ export default new Command({
       });
     }
 
-    const requestedMember = userId === user.id ? interaction.member : interaction.data?.resolved?.members?.[userId];
+    const requestedMember =
+      userId === user.id ? interaction.member : interaction.data?.resolved?.members?.[userId];
     const displayName = getUserDisplayName(requestedUser, requestedMember);
     const avatar = getUserAvatar(requestedUser);
 
