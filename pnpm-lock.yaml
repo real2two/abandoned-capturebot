@@ -192,9 +192,15 @@ importers:
       '@/redis':
         specifier: workspace:*
         version: link:../redis
+      discord-api-types:
+        specifier: ^0.37.79
+        version: 0.37.79
       drizzle-orm:
         specifier: ^0.30.4
         version: 0.30.8(mysql2@3.9.4)
+      ts-case-convert:
+        specifier: ^2.0.7
+        version: 2.0.7
     devDependencies:
       '@/eslint-config':
         specifier: workspace:*
@@ -1931,7 +1937,7 @@ snapshots:
   '@eslint/eslintrc@2.1.4':
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       espree: 9.6.1
       globals: 13.24.0
       ignore: 5.3.1
@@ -1949,7 +1955,7 @@ snapshots:
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.3
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -2230,10 +2236,6 @@ snapshots:
       es5-ext: 0.10.64
       type: 2.7.2
 
-  debug@4.3.4:
-    dependencies:
-      ms: 2.1.2
-
   debug@4.3.4(supports-color@5.5.0):
     dependencies:
       ms: 2.1.2
@@ -2425,7 +2427,7 @@ snapshots:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2

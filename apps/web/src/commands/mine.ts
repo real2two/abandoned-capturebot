@@ -9,9 +9,7 @@ import { createMineMessage, createMineMessageComponents } from '../utils/message
 import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
 
 export default new Command({
-  data: new SlashCommandBuilder()
-    .setName('mine')
-    .setDescription('Gain resources through clicking buttons'),
+  data: new SlashCommandBuilder().setName('mine').setDescription('Gain resources through clicking buttons'),
   execute: async ({ user, interaction, respond }) => {
     // Fetch player
     const player = await getUser(user.id);
@@ -30,16 +28,13 @@ export default new Command({
     });
 
     // Set the active mine message ID
-    const message = (await rest.patch(
-      Routes.webhookMessage(interaction.applicationId, interaction.token),
-      {
-        body: {
-          components: createMineMessageComponents({
-            canMove,
-          }),
-        },
+    const message = (await rest.patch(Routes.webhookMessage(interaction.applicationId, interaction.token), {
+      body: {
+        components: createMineMessageComponents({
+          canMove,
+        }),
       },
-    )) as ObjectToCamel<RESTPatchAPIWebhookResult>;
+    })) as ObjectToCamel<RESTPatchAPIWebhookResult>;
     await setMineActiveMessage(user.id, message.id);
   },
 });

@@ -1,5 +1,5 @@
 import type { SlashCommandBuilder } from '@discordjs/builders';
-import type { InteractionRequestWithUser } from '../types/interaction';
+import type { InteractionRequestWithUser } from '@/utils';
 
 export default class Command {
   data: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>;

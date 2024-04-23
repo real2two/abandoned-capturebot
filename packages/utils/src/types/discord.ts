@@ -11,6 +11,7 @@ import type {
   APIModalInteractionResponse,
   APIPremiumRequiredInteractionResponse,
   APIUser,
+  APIGuildMember,
 } from 'discord-api-types/v10';
 import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
 import type { InteractionResponseAttachment } from './interaction';
@@ -27,9 +28,9 @@ export type CustomAPIInteractionResponse =
 
 export type CamelizedInteraction = ObjectToCamel<APIBaseInteraction<InteractionType, any>>;
 export type CamelizedUser = ObjectToCamel<APIUser>;
+export type CamelizedGuildMember = ObjectToCamel<APIGuildMember>;
 
-export type CamelizedCustomAPIInteractionResponseCallbackData =
-  ObjectToCamel<CustomAPIInteractionResponseCallbackData>;
+export type CamelizedCustomAPIInteractionResponseCallbackData = ObjectToCamel<CustomAPIInteractionResponseCallbackData>;
 
 export interface CustomAPIInteractionResponseCallbackData
   extends Omit<APIInteractionResponseCallbackData, 'attachments'> {
@@ -46,7 +47,6 @@ export interface CustomAPIInteractionResponseDeferredChannelMessageWithSource
   data: Pick<CustomAPIInteractionResponseCallbackData, 'flags'>;
 }
 
-export interface CustomAPIInteractionResponseUpdateMessage
-  extends Omit<APIInteractionResponseUpdateMessage, 'data'> {
+export interface CustomAPIInteractionResponseUpdateMessage extends Omit<APIInteractionResponseUpdateMessage, 'data'> {
   data: CustomAPIInteractionResponseCallbackData;
 }

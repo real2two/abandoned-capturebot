@@ -60,10 +60,7 @@ export function nextMineStep({
         })();
 
         // Disallows the player from going above the canvas and walking into a wall
-        if (
-          !snapshot[row]?.[column] ||
-          snapshot[newRow][newColumn].blockId === MineSnapshotBlockId.Wall
-        ) {
+        if (!snapshot[row]?.[column] || snapshot[newRow][newColumn].blockId === MineSnapshotBlockId.Wall) {
           throw new Error('The player cannot take a step on the following direction currently');
         }
 

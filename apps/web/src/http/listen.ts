@@ -10,7 +10,7 @@ import { FormDataEncoder } from 'form-data-encoder';
 import { Readable } from 'stream';
 
 import type { RESTAPIAttachment } from 'discord-api-types/v10';
-import type { CamelizedInteraction, InteractionResponseAttachment } from '../types';
+import type { CamelizedInteraction, InteractionResponseAttachment } from '@/utils/types';
 
 const app = new HyperExpress.Server();
 
@@ -21,13 +21,7 @@ app.post('/interactions', async (req, res) => {
 
   const body = await req.text();
 
-  const isValid = await verify(
-    body,
-    signature,
-    timestamp,
-    env.DiscordPublicKey,
-    crypto.webcrypto.subtle,
-  );
+  const isValid = await verify(body, signature, timestamp, env.DiscordPublicKey, crypto.webcrypto.subtle);
 
   if (!isValid) return res.status(401).send('Invalid signature');
 

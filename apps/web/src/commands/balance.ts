@@ -2,7 +2,7 @@ import Command from '../structures/Command';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
-import { GREEN_COLOR, fetchUser } from '@/utils';
+import { GREEN_COLOR, fetchUser, getUserAvatar, getUserDisplayName } from '@/utils';
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -23,18 +23,9 @@ export default new Command({
       });
     }
 
-    const requestedMember = interaction.data?.resolved?.members?.[userId] || interaction.member;
-    const displayName =
-      requestedMember?.nick ||
-      requestedUser?.globalName ||
-      (requestedUser?.username
-        ? `${requestedUser?.username}${
-            requestedUser?.discriminator !== '0' ? `#${requestedUser?.discriminator}` : ''
-          }`
-        : user.id);
-    const avatar = requestedUser?.avatar
-      ? `https://cdn.discordapp.com/avatars/${userId}/${requestedUser.avatar}`
-      : `https://cdn.discordapp.com/embed/avatars/${(BigInt(userId) >> 22n) % 6n}.png`;
+    const requestedMember = userId === user.id ? interaction.member : interaction.data?.resolved?.members?.[userId];
+    const displayName = getUserDisplayName(requestedUser, requestedMember);
+    const avatar = getUserAvatar(requestedUser);
 
     const player = await fetchUser(userId);
     const rocks = player?.currencyRocks || 0;

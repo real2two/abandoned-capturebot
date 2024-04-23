@@ -1,7 +1,7 @@
 import components from '../utils/components';
 import Event from '../structures/Event';
 
-import type { InteractionRequestDataWithUser } from '../types/interaction';
+import type { InteractionRequestDataWithUser } from '@/utils';
 
 export default new Event({
   execute: (data) => {
