@@ -1,4 +1,4 @@
-import { gridTileSize } from './canvas';
+import { gridTileSize, halfGridTileSize } from './canvas';
 import type { SKRSContext2D, Image } from '@napi-rs/canvas';
 
 export function drawImageTile(
@@ -9,8 +9,8 @@ export function drawImageTile(
   options?: { reversed: boolean },
 ) {
   ctx.save();
-  ctx.translate(gridTileSize * x + 32, gridTileSize * y);
+  ctx.translate(gridTileSize * x + halfGridTileSize, gridTileSize * y);
   if (options?.reversed) ctx.scale(-1, 1);
-  ctx.drawImage(image, -32, 0);
+  ctx.drawImage(image, -halfGridTileSize, 0, gridTileSize, gridTileSize);
   ctx.restore();
 }
