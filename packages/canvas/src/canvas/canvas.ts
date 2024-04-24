@@ -1,6 +1,6 @@
 import { createCanvas } from '@napi-rs/canvas';
 
-export const gridTileSize = 32;
+export const gridTileSize = 34;
 export const halfGridTileSize = gridTileSize / 2;
 export const canvasSize = gridTileSize * 9;
 
