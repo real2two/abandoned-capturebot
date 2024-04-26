@@ -1,6 +1,7 @@
 {
   "name": "capturebot",
   "private": true,
+  "version": "0.0.0",
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
     "start": "dotenv -- turbo run start",
@@ -18,9 +19,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.0",
-    "turbo": "^1.13.2"
+    "turbo": "^1.13.3"
   },
-  "packageManager": "pnpm@9.0.5",
+  "packageManager": "pnpm@9.0.6",
   "engines": {
     "node": ">=18"
   }

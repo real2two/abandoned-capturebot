@@ -88,6 +88,12 @@ export function createMineMessageComponents({
           customId: 'mine:right',
           disabled: setLoadingComponents || !canMove.right,
         },
+        {
+          type: ComponentType.Button,
+          style: ButtonStyle.Secondary,
+          emoji: setLoadingComponents ? { id: LOADING_EMOJI_ID } : { name: '🔄' },
+          customId: 'mine:refresh',
+        },
       ],
     },
   ];

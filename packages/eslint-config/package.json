@@ -1,6 +1,5 @@
 {
   "name": "@/eslint-config",
-  "version": "0.0.0",
   "main": "index.js",
   "dependencies": {
     "@typescript-eslint/parser": "^7.7.0",

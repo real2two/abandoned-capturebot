@@ -1,5 +1,5 @@
 import { loadImage } from '@napi-rs/canvas';
-import { getDirname } from './utils';
+import { getDirname } from '@/utils';
 
 const __dirname = getDirname(import.meta.url);
 

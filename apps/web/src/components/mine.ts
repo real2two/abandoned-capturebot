@@ -2,6 +2,7 @@ import Component from '../structures/Component';
 
 import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
 import {
+  MineSnapshotRows,
   findPlayer,
   getCooldown,
   getMineActiveMessage,
@@ -62,48 +63,65 @@ export default new Component({
     });
 
     const customId = interaction.data?.customId;
-    const direction = customId.slice('mine:'.length) as 'up' | 'left' | 'right';
+    const direction = customId.slice('mine:'.length) as 'up' | 'left' | 'right' | 'refresh';
 
     const player = await getUser(user.id);
     const { canMove } = findPlayer(player.mineSnapshot);
 
-    // Update player's mine data
-    if (!canMove[direction]) {
-      // In theory, this should never happen, but Discord has an issue where embed images sometimes load too slowly.
-      // When this happens, a message edit is delayed and an edit you've done later may be replaced an earlier edit.
-      return respond({
-        type: InteractionResponseType.UpdateMessage,
-        data: await createMineMessage({
-          user,
-          snapshot: player.mineSnapshot,
-          currencyRocks: player.currencyRocks,
-          canMove,
-        }),
+    let snapshot: MineSnapshotRows;
+    let currencyRocks: number;
+    let updatedCanMove: ReturnType<typeof findPlayer>['canMove'];
+
+    if (direction === 'refresh') {
+      // If you're just refreshing the embed, it doesn't need to update anything
+      snapshot = player.mineSnapshot;
+      currencyRocks = player.currencyRocks;
+      updatedCanMove = canMove;
+    } else {
+      // Update player's mine data
+      if (!canMove[direction]) {
+        // In theory, this should never happen, but Discord has an issue where embed images sometimes load too slowly.
+        // When this happens, a message edit is delayed and an edit you've done later may be replaced an earlier edit.
+        return respond({
+          type: InteractionResponseType.UpdateMessage,
+          data: await createMineMessage({
+            user,
+            snapshot: player.mineSnapshot,
+            currencyRocks: player.currencyRocks,
+            canMove,
+          }),
+        });
+      }
+
+      // Simulates a player step
+      const step = nextMineStep({
+        direction,
+        currencyRocks: player.currencyRocks,
+        snapshot: player.mineSnapshot,
       });
+
+      // Updates the user
+      const updatedPlayer = findPlayer(step.snapshot);
+      await updateUser(user.id, {
+        currencyRocks: step.currencyRocks,
+        mineSnapshot: step.snapshot,
+
+        mineTotalClicks: player.mineTotalClicks + 1,
+        mineTotalUpwardClicks: player.mineTotalUpwardClicks + Number(direction === 'up'),
+      });
+
+      // Set the variables for responding to the interaction
+      snapshot = step.snapshot;
+      currencyRocks = step.currencyRocks;
+      updatedCanMove = updatedPlayer.canMove;
     }
-
-    const { currencyRocks, snapshot } = nextMineStep({
-      direction,
-      currencyRocks: player.currencyRocks,
-      snapshot: player.mineSnapshot,
-    });
-
-    const { canMove: newCanMove } = findPlayer(snapshot);
-
-    await updateUser(user.id, {
-      currencyRocks,
-      mineSnapshot: snapshot,
-
-      mineTotalClicks: player.mineTotalClicks + 1,
-      mineTotalUpwardClicks: player.mineTotalUpwardClicks + Number(direction === 'up'),
-    });
 
     // Creates the message
     const message = await createMineMessage({
       user,
       snapshot,
       currencyRocks,
-      canMove: newCanMove,
+      canMove: updatedCanMove,
     });
 
     // Sends the mine forward message

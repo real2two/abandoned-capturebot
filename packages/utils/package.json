@@ -1,7 +1,6 @@
 {
   "name": "@/utils",
   "type": "module",
-  "version": "0.0.0",
   "main": "src/index.ts",
   "scripts": {
     "lint": "eslint ./**/*.ts"
@@ -15,6 +14,7 @@
     "@/redis": "workspace:*",
     "discord-api-types": "^0.37.79",
     "drizzle-orm": "^0.30.4",
+    "hyper-express": "^6.15.2",
     "ts-case-convert": "^2.0.7"
   },
   "devDependencies": {
