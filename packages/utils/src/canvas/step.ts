@@ -37,7 +37,7 @@ export function nextMineStep({
   snapshot,
 }: {
   direction: 'left' | 'up' | 'right';
-  currencyRocks: number;
+  currencyRocks: bigint;
   snapshot: MineSnapshotRows;
 }) {
   // Create a new snapshot object, so it doesn't replace the older one
@@ -72,7 +72,7 @@ export function nextMineStep({
 
         const newTile = snapshot[newRow][newColumn];
         if (newTile.tileId === MineSnapshotTileId.Rock) {
-          currencyRocks += 1 + Number(newTile.dual);
+          currencyRocks += 1n + BigInt(newTile.dual);
         }
 
         snapshot[row][column] = { tileId: MineSnapshotTileId.Empty };

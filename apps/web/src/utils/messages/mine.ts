@@ -13,7 +13,7 @@ export async function createMineMessage({
 }: {
   user: CamelizedUser;
   snapshot: MineSnapshotRows;
-  currencyRocks: number;
+  currencyRocks: bigint;
   canMove: {
     left: boolean;
     up: boolean;
@@ -28,7 +28,7 @@ export async function createMineMessage({
         color: BLUE_COLOR,
         title: 'Mining',
         description: `You have **🪨 ${currencyRocks} rock${
-          currencyRocks === 1 ? '' : 's'
+          currencyRocks === 1n ? '' : 's'
         }** currently.`,
         image: {
           url: 'attachment://image.webp',

@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "b68359f0-e2cd-4e05-8453-316117d4f8c1",
+  "id": "e35d8004-67f8-4c13-b211-ef476d144d1e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "users": {
@@ -16,11 +16,10 @@
         },
         "currency_rocks": {
           "name": "currency_rocks",
-          "type": "int unsigned",
+          "type": "bigint unsigned",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": 0
+          "autoincrement": false
         },
         "mine_snapshot": {
           "name": "mine_snapshot",
@@ -34,16 +33,14 @@
           "type": "int",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": 0
+          "autoincrement": false
         },
         "mine_totalupwardclicks": {
           "name": "mine_totalupwardclicks",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": 0
+          "autoincrement": false
         }
       },
       "indexes": {},

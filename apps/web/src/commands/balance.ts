@@ -29,7 +29,7 @@ export default new Command({
     const avatar = getUserAvatar(requestedUser);
 
     const player = await fetchUser(userId);
-    const rocks = player?.currencyRocks || 0;
+    const rocks = player?.currencyRocks || 0n;
 
     return respond({
       type: InteractionResponseType.ChannelMessageWithSource,
@@ -41,7 +41,7 @@ export default new Command({
             thumbnail: {
               url: avatar,
             },
-            description: `🪨 ${rocks} rock${rocks === 1 ? '' : 's'}`,
+            description: `🪨 ${rocks} rock${rocks === 1n ? '' : 's'}`,
           },
         ],
       },

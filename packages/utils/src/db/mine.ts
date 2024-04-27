@@ -26,7 +26,7 @@ export async function createUser(userId: bigint): Promise<typeof schema.users.$i
   const values = {
     userId,
 
-    currencyRocks: 0,
+    currencyRocks: 0n,
     mineSnapshot: createDefaultMineSnapshot(),
 
     mineTotalClicks: 0,

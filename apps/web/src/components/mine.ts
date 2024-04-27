@@ -69,7 +69,7 @@ export default new Component({
     const { canMove } = findPlayer(player.mineSnapshot);
 
     let snapshot: MineSnapshotRows;
-    let currencyRocks: number;
+    let currencyRocks: bigint;
     let updatedCanMove: ReturnType<typeof findPlayer>['canMove'];
 
     if (direction === 'refresh') {
