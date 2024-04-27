@@ -62,7 +62,6 @@ export function editMessage(interaction: CamelizedInteraction, message: Interact
   if (message?.attachments) {
     // Create attachments variable
     const attachments = message?.attachments as InteractionResponseAttachment[];
-
     // Create an updated message attachments object
     const messageAttachments: RESTAPIAttachment[] = [];
     for (let id = 0; id < message.attachments.length; ++id) {
@@ -71,7 +70,6 @@ export function editMessage(interaction: CamelizedInteraction, message: Interact
         filename: message.attachments[id].name,
       });
     }
-
     // Create attachment response
     return rest.patch(Routes.webhookMessage(interaction.applicationId, interaction.token), {
       body: {
