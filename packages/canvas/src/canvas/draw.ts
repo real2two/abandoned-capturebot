@@ -69,7 +69,11 @@ export async function drawMineTile({
     }
     case MineSnapshotTileId.Rock: {
       if (tile.dual) {
-        drawImageTile(ctx, Images.rocks.dualRocks, x, y, { reversed: tile.reversed });
+        if (tile.reversed) {
+          drawImageTile(ctx, Images.rocks.dualRocks, x, y, { reversed: x < 5 });
+        } else {
+          drawImageTile(ctx, Images.rocks.dualRocksReversed, x, y, { reversed: x < 5 });
+        }
       } else {
         drawImageTile(ctx, Images.rocks.rock, x, y, { reversed: tile.reversed });
       }
