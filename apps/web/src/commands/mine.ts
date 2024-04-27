@@ -1,12 +1,10 @@
 import Command from '../structures/Command';
-import rest from '../utils/rest';
+import { editMessage } from '../utils/rest';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { InteractionResponseType, RESTPatchAPIWebhookResult, Routes } from 'discord-api-types/v10';
+import { InteractionResponseType } from 'discord-api-types/v10';
 import { getUser, findPlayer, setMineActiveMessage } from '@/utils';
 import { createMineMessage, createMineMessageComponents } from '../utils/messages';
-
-import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -30,16 +28,11 @@ export default new Command({
     });
 
     // Set the active mine message ID
-    const message = (await rest.patch(
-      Routes.webhookMessage(interaction.applicationId, interaction.token),
-      {
-        body: {
-          components: createMineMessageComponents({
-            canMove,
-          }),
-        },
-      },
-    )) as ObjectToCamel<RESTPatchAPIWebhookResult>;
+    const message = await editMessage(interaction, {
+      components: createMineMessageComponents({
+        canMove,
+      }),
+    });
     await setMineActiveMessage(user.id, message.id);
   },
 });

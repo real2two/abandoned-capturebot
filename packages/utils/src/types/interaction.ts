@@ -1,12 +1,19 @@
 import type HyperExpress from 'hyper-express';
 import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
-import type { CustomAPIInteractionResponse, CamelizedInteraction, CamelizedUser } from './discord';
+import type {
+  CustomAPIInteractionResponse,
+  CamelizedInteraction,
+  CamelizedUser,
+  CustomAPIInteractionResponseUpdateMessage,
+} from './discord';
 
 export type InteractionResponse = ObjectToCamel<CustomAPIInteractionResponse>;
+export type InteractionUpdateResponse =
+  ObjectToCamel<CustomAPIInteractionResponseUpdateMessage>['data'];
 
 export interface InteractionResponseAttachment {
   name: string;
-  file: any;
+  data: any;
 }
 
 export interface InteractionRequestData {

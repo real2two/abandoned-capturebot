@@ -12,9 +12,12 @@ import type {
   APIPremiumRequiredInteractionResponse,
   APIUser,
   APIGuildMember,
+  RESTPatchAPIWebhookResult,
 } from 'discord-api-types/v10';
 import type { ObjectToCamel } from 'ts-case-convert/lib/caseConvert';
 import type { InteractionResponseAttachment } from './interaction';
+
+export type CamelizedRESTPatchAPIWebhookResult = ObjectToCamel<RESTPatchAPIWebhookResult>;
 
 export type CustomAPIInteractionResponse =
   | APIApplicationCommandAutocompleteResponse

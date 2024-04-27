@@ -41,23 +41,23 @@ export default new Command({
         attachments: [
           {
             name: 'image.webp',
-            file: await renderMineDebugScene(),
+            data: await renderMineDebugScene(),
           },
           {
             name: 'image2.webp',
-            file: await renderMineDebugScene(),
+            data: await renderMineDebugScene(),
           },
           {
             name: 'image3.webp',
-            file: await renderMineDebugScene(),
+            data: await renderMineDebugScene(),
           },
           {
             name: 'image4.webp',
-            file: await renderMineDebugScene(),
+            data: await renderMineDebugScene(),
           },
           {
             name: 'image5.webp',
-            file: await renderMineDebugScene(),
+            data: await renderMineDebugScene(),
           },
         ],
       },

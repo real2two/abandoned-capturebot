@@ -68,7 +68,7 @@ app.post('/interactions', async (req, res) => {
 
           // Append the files
           for (let i = 0; i < attachments.length; ++i) {
-            formData.append(`files[${i}]`, new Blob([attachments[i].file]));
+            formData.append(`files[${i}]`, new Blob([attachments[i].data]));
           }
 
           // Create the encoder and readable

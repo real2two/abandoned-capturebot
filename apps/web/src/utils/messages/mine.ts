@@ -38,7 +38,7 @@ export async function createMineMessage({
     attachments: [
       {
         name: 'image.webp',
-        file: await renderMineScene({
+        data: await renderMineScene({
           userId: user.id,
           avatar: user.avatar,
           snapshot,
@@ -93,6 +93,7 @@ export function createMineMessageComponents({
           style: ButtonStyle.Secondary,
           emoji: setLoadingComponents ? { id: LOADING_EMOJI_ID } : { name: '🔄' },
           customId: 'mine:refresh',
+          disabled: setLoadingComponents,
         },
       ],
     },
