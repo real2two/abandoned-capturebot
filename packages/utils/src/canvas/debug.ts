@@ -1,4 +1,4 @@
-import { generateCave } from './generation/rocks';
+import { generateCave } from './generation/cave';
 import type { MineSnapshotRows } from '../types';
 
 export function createDebugMineSnapshot(): MineSnapshotRows {

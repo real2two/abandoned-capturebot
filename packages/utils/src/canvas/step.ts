@@ -70,8 +70,9 @@ export function nextMineStep({
 
         finished = true;
 
-        if (snapshot[newRow][newColumn].tileId === MineSnapshotTileId.Rock) {
-          currencyRocks++;
+        const newTile = snapshot[newRow][newColumn];
+        if (newTile.tileId === MineSnapshotTileId.Rock) {
+          currencyRocks += 1 + Number(newTile.dual);
         }
 
         snapshot[row][column] = { tileId: MineSnapshotTileId.Empty };

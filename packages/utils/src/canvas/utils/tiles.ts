@@ -19,6 +19,23 @@ export function wall(): MineSnapshotTileBase {
 export function rock(data?: { reversed?: boolean }): MineSnapshotTileRock {
   return {
     tileId: MineSnapshotTileId.Rock,
+    dual: false,
+    reversed: typeof data?.reversed === 'boolean' ? data.reversed : !!Math.round(Math.random()),
+  };
+}
+
+export function dualRock(data?: { reversed?: boolean }): MineSnapshotTileRock {
+  return {
+    tileId: MineSnapshotTileId.Rock,
+    dual: true,
+    reversed: typeof data?.reversed === 'boolean' ? data.reversed : !!Math.round(Math.random()),
+  };
+}
+
+export function randomRock(data?: { reversed?: boolean }): MineSnapshotTileRock {
+  return {
+    tileId: MineSnapshotTileId.Rock,
+    dual: !!Math.round(Math.random()),
     reversed: typeof data?.reversed === 'boolean' ? data.reversed : !!Math.round(Math.random()),
   };
 }

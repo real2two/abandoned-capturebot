@@ -1,8 +1,10 @@
-import { empty, rock, wall } from './utils/tiles';
-import { cloneRow, leftTiles, rightTiles, oneTile, fiveTiles } from './utils/builders';
-import type { MineSnapshotRows } from '../types';
+import { empty, wall } from './utils/tiles';
+import { fiveTiles } from './utils/builders';
 
-import { generateCave } from './generation/rocks';
+import { generateRock } from './generation/rock';
+import { generateCave } from './generation/cave';
+
+import type { MineSnapshotRows } from '../types';
 
 /**
  * Create a mine row
@@ -19,5 +21,5 @@ export function createMineRows(snapshot: MineSnapshotRows): MineSnapshotRows {
     }
   }
 
-  return [oneTile(rock())];
+  return generateRock();
 }

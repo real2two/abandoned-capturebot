@@ -16,5 +16,6 @@ export interface MineSnapshotTileBase {
 
 export interface MineSnapshotTileRock {
   tileId: MineSnapshotTileId.Rock;
+  dual: boolean;
   reversed: boolean;
 }

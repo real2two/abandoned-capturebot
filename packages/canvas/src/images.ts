@@ -18,5 +18,6 @@ export default {
   },
   rocks: {
     rock: await load('rocks/rock.png'),
+    dualRocks: await load('rocks/dualRocks.png'),
   },
 };
