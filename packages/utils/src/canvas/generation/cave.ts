@@ -1,4 +1,4 @@
-import { empty, rock, randomRock, wall } from '../utils/tiles';
+import { empty, rock, randomRock, wall, dualRock } from '../utils/tiles';
 import { cloneRow, leftTiles, rightTiles, oneTile, fiveTiles } from '../utils/builders';
 
 export function generateCave() {
@@ -6,16 +6,17 @@ export function generateCave() {
 
   const hasTopRocks = Math.round(Math.random());
   const isBottomLeft = Math.round(Math.random());
+  const fiveTileChance = Math.round(Math.random());
 
   if (hasTopRocks) {
     if (isBottomLeft) {
-      rows.push(leftTiles([randomRock(), randomRock()]));
+      rows.push(leftTiles([fiveTileChance ? randomRock() : dualRock(), randomRock()]));
     } else {
-      rows.push(rightTiles([randomRock(), randomRock()]));
+      rows.push(rightTiles([randomRock(), fiveTileChance ? randomRock() : dualRock()]));
     }
   }
 
-  if (Math.round(Math.random())) {
+  if (fiveTileChance) {
     rows.push(
       fiveTiles([
         !isBottomLeft ? randomRock() : wall(),
@@ -38,9 +39,9 @@ export function generateCave() {
   }
 
   if (isBottomLeft) {
-    rows.push(rightTiles([empty(), randomRock()]));
+    rows.push(rightTiles([empty(), fiveTileChance ? randomRock() : dualRock()]));
   } else {
-    rows.push(leftTiles([randomRock(), empty()]));
+    rows.push(leftTiles([fiveTileChance ? randomRock() : dualRock(), empty()]));
   }
 
   return rows;
