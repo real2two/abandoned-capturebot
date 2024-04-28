@@ -44,7 +44,7 @@ export function findPlayerRow(snapshot: MineSnapshotAreas) {
  * Make the player take a step on the current map
  * (ex. when step = 0, you see the rows 0-9)
  * @param data The amount of steps the player has taken and the current snapshot of the map
- * @returns The new mine data (aka 9 rows of mine data()
+ * @returns The new mine data (aka 9 rows of mine data)
  */
 export function nextMineStep({
   direction,
@@ -106,6 +106,9 @@ export function nextMineStep({
   if (direction === 'up') {
     const newPlayerRow = findPlayerRow(newSnapshot);
     const beforeLast = rows.length - newSnapshot[newSnapshot.length - 1].tiles.length;
+    // If I add ever add any "teleport back" object, don't put it on the last 2 rows of an area.
+    // Why? Then, the player would be able to see the deleted rows behind it.
+    // I'm too lazy to fix this, considering the fact this is working as intended.
     if (beforeLast > newPlayerRow + 2) {
       newSnapshot.pop();
     }
