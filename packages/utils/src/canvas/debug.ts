@@ -1,7 +1,7 @@
 import { generateCave } from './generation/cave';
-import type { MineSnapshotRows } from '../types';
+import type { MineSnapshotAreas } from '../types';
 
-export function createDebugMineSnapshot(): MineSnapshotRows {
+export function createDebugMineSnapshot(): MineSnapshotAreas {
   // Add debuging rows here
   return generateCave();
 }

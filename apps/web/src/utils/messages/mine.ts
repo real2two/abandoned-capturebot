@@ -1,8 +1,12 @@
 import { renderMineScene } from '@/canvas';
-import { BLUE_COLOR, LOADING_EMOJI_ID, type MineSnapshotRows } from '@/utils';
+import { BLUE_COLOR, LOADING_EMOJI_ID } from '@/utils';
 import { ButtonStyle, ComponentType } from 'discord-api-types/v10';
 
-import type { CamelizedCustomAPIInteractionResponseCallbackData, CamelizedUser } from '@/utils';
+import type {
+  CamelizedCustomAPIInteractionResponseCallbackData,
+  CamelizedUser,
+  MineSnapshotAreas,
+} from '@/utils';
 
 export async function createMineMessage({
   user,
@@ -12,7 +16,7 @@ export async function createMineMessage({
   setLoadingComponents = false,
 }: {
   user: CamelizedUser;
-  snapshot: MineSnapshotRows;
+  snapshot: MineSnapshotAreas;
   currencyRocks: bigint;
   canMove: {
     left: boolean;

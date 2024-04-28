@@ -2,7 +2,7 @@ import Component from '../structures/Component';
 
 import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
 import {
-  MineSnapshotRows,
+  MineSnapshotAreas,
   findPlayer,
   getCooldown,
   getMineActiveMessage,
@@ -68,7 +68,7 @@ export default new Component({
     const player = await getUser(user.id);
     const { canMove } = findPlayer(player.mineSnapshot);
 
-    let snapshot: MineSnapshotRows;
+    let snapshot: MineSnapshotAreas;
     let currencyRocks: bigint;
     let updatedCanMove: ReturnType<typeof findPlayer>['canMove'];
 

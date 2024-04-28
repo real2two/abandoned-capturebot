@@ -1,5 +1,26 @@
 import { empty, wall } from './tiles';
-import type { MineSnapshotRows, MineSnapshotColumns, MineSnapshotTile } from '../../types';
+import {
+  MineSnapshotAreaId,
+  type MineSnapshotAreas,
+  type MineSnapshotArea,
+  type MineSnapshotRows,
+  type MineSnapshotColumns,
+  type MineSnapshotTile,
+} from '../../types';
+
+export function baseArea(tiles: MineSnapshotRows): MineSnapshotArea {
+  return {
+    id: MineSnapshotAreaId.Base,
+    tiles,
+  };
+}
+
+export function baseSplitAreas(tiles: MineSnapshotRows): MineSnapshotAreas {
+  return tiles.map((t) => ({
+    id: MineSnapshotAreaId.Base,
+    tiles: [t],
+  }));
+}
 
 export function emptyRow() {
   return [empty(), empty(), empty(), empty(), empty(), empty(), empty(), empty(), empty()];
@@ -37,10 +58,6 @@ export function rightTiles(tiles: MineSnapshotTile[]) {
     row.push(wall());
   }
   return row;
-}
-
-export function wallTile() {
-  return oneTile(wall());
 }
 
 export function oneTile(tile: MineSnapshotTile) {

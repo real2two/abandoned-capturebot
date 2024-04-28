@@ -1,3 +1,14 @@
+export type MineSnapshotAreas = MineSnapshotArea[];
+export type MineSnapshotArea = {
+  id: MineSnapshotAreaId.Base;
+  data?: any; // WIP
+  tiles: MineSnapshotRows;
+};
+
+export enum MineSnapshotAreaId {
+  Base = 0,
+}
+
 export type MineSnapshotRows = MineSnapshotColumns[];
 export type MineSnapshotColumns = MineSnapshotTile[];
 

@@ -1,8 +1,16 @@
 import { empty, rock, randomRock, wall, dualRock } from '../utils/tiles';
-import { cloneRow, leftTiles, rightTiles, oneTile, fiveTiles } from '../utils/builders';
+import {
+  baseArea,
+  baseSplitAreas,
+  cloneRow,
+  leftTiles,
+  rightTiles,
+  oneTile,
+  fiveTiles,
+} from '../utils/builders';
 
 export function generateCave() {
-  const rows = [...cloneRow(oneTile(rock()), 4)];
+  const rows = [];
 
   const hasTopRocks = Math.round(Math.random());
   const isBottomLeft = Math.round(Math.random());
@@ -44,5 +52,5 @@ export function generateCave() {
     rows.push(leftTiles([fiveTileChance ? randomRock() : dualRock(), empty()]));
   }
 
-  return rows;
+  return [...baseSplitAreas(cloneRow(oneTile(rock()), 4)), baseArea(rows)];
 }

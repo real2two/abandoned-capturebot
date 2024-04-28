@@ -1,17 +1,17 @@
-import { player, rock } from './utils/tiles';
-import { oneTile, wallTile } from './utils/builders';
-import type { MineSnapshotRows } from '../types';
+import { player, rock, wall } from './utils/tiles';
+import { baseArea, oneTile } from './utils/builders';
+import type { MineSnapshotAreas } from '../types';
 
-export function createDefaultMineSnapshot(): MineSnapshotRows {
+export function createDefaultMineSnapshot(): MineSnapshotAreas {
   return [
-    oneTile(rock()),
-    oneTile(rock()),
-    oneTile(rock()),
-    oneTile(rock()),
-    oneTile(rock()),
-    oneTile(rock()),
-    oneTile(player()),
-    wallTile(),
-    wallTile(),
+    baseArea([oneTile(rock())]),
+    baseArea([oneTile(rock())]),
+    baseArea([oneTile(rock())]),
+    baseArea([oneTile(rock())]),
+    baseArea([oneTile(rock())]),
+    baseArea([oneTile(rock())]),
+    baseArea([oneTile(player())]),
+    baseArea([oneTile(wall())]),
+    baseArea([oneTile(wall())]),
   ];
 }

@@ -1,24 +1,39 @@
-import { MineSnapshotTileId, type MineSnapshotRows } from '@/db';
+import { MineSnapshotTileId } from '@/db';
 import { createMineRows } from './rows';
+import { flattenSnapshot } from './flatten';
+import type { MineSnapshotAreas } from '../types';
 
-export function findPlayer(snapshot: MineSnapshotRows) {
-  for (let row = 0; row < snapshot.length; ++row) {
-    for (let column = 0; column < snapshot[row].length; ++column) {
-      if (snapshot[row][column].tileId === MineSnapshotTileId.Player) {
-        const leftOfPlayer = snapshot[row]?.[column - 1];
-        const frontOfPlayer = snapshot[row - 1]?.[column];
-        const rightOfPlayer = snapshot[row]?.[column + 1];
+export function findPlayer(snapshot: MineSnapshotAreas) {
+  const rows = flattenSnapshot(snapshot);
+  for (let row = 0; row < rows.length; ++row) {
+    for (let column = 0; column < rows[row].length; ++column) {
+      if (rows[row][column].tileId === MineSnapshotTileId.Player) {
+        const leftOfPlayer = rows[row]?.[column - 1];
+        const frontOfPlayer = rows[row - 1]?.[column];
+        const rightOfPlayer = rows[row]?.[column + 1];
 
         return {
           row,
           column,
-          tile: snapshot[row][column],
+          tile: rows[row][column],
           canMove: {
             left: leftOfPlayer ? leftOfPlayer.tileId !== MineSnapshotTileId.Wall : false,
             up: frontOfPlayer ? frontOfPlayer.tileId !== MineSnapshotTileId.Wall : false,
             right: rightOfPlayer ? rightOfPlayer.tileId !== MineSnapshotTileId.Wall : false,
           },
         };
+      }
+    }
+  }
+  throw new Error('Cannot find player in the scene');
+}
+
+export function findPlayerRow(snapshot: MineSnapshotAreas) {
+  const rows = flattenSnapshot(snapshot);
+  for (let row = 0; row < rows.length; ++row) {
+    for (let column = 0; column < rows[row].length; ++column) {
+      if (rows[row][column].tileId === MineSnapshotTileId.Player) {
+        return row;
       }
     }
   }
@@ -38,21 +53,24 @@ export function nextMineStep({
 }: {
   direction: 'left' | 'up' | 'right';
   currencyRocks: bigint;
-  snapshot: MineSnapshotRows;
+  snapshot: MineSnapshotAreas;
 }) {
   // Create a new snapshot object, so it doesn't replace the older one
-  const newSnapshot = [...snapshot];
+  const newSnapshot = [...snapshot.map((s) => ({ ...s }))];
 
   // If player moves forward, adds the new tile to the top
-  if (direction === 'up' && newSnapshot.length <= 9) {
+  const oldPlayerRow = findPlayerRow(newSnapshot);
+  const oldRows = flattenSnapshot(newSnapshot);
+  if (direction === 'up' && !oldRows[oldPlayerRow - 7]) {
     newSnapshot.unshift(...createMineRows(newSnapshot));
   }
 
   // Move the player forward
+  const rows = flattenSnapshot(newSnapshot);
   let finished = false;
-  for (let row = 0; row < snapshot.length; ++row) {
-    for (let column = 0; column < snapshot[row].length; ++column) {
-      if (snapshot[row][column].tileId === MineSnapshotTileId.Player) {
+  for (let row = 0; row < rows.length; ++row) {
+    for (let column = 0; column < rows[row].length; ++column) {
+      if (rows[row][column].tileId === MineSnapshotTileId.Player) {
         // Set the variables
         const { newRow, newColumn } = (() => {
           if (direction === 'left') return { newRow: row, newColumn: column - 1 };
@@ -61,22 +79,22 @@ export function nextMineStep({
         })();
 
         // Disallows the player from going above the canvas and walking into a wall
-        if (
-          !snapshot[row]?.[column] ||
-          snapshot[newRow][newColumn].tileId === MineSnapshotTileId.Wall
-        ) {
+        if (!rows[row]?.[column] || rows[newRow][newColumn].tileId === MineSnapshotTileId.Wall) {
           throw new Error('The player cannot take a step on the following direction currently');
         }
 
         finished = true;
 
-        const newTile = snapshot[newRow][newColumn];
+        // TODO: Do something with the area object (ex. saving data in it)
+        // const area = newSnapshot.find((s) => s.tiles.some((t) => t === rows[newRow]));
+
+        const newTile = rows[newRow][newColumn];
         if (newTile.tileId === MineSnapshotTileId.Rock) {
           currencyRocks += 1n + BigInt(newTile.dual);
         }
 
-        snapshot[row][column] = { tileId: MineSnapshotTileId.Empty };
-        snapshot[newRow][newColumn] = { tileId: MineSnapshotTileId.Player };
+        rows[row][column] = { tileId: MineSnapshotTileId.Empty };
+        rows[newRow][newColumn] = { tileId: MineSnapshotTileId.Player };
 
         break;
       }
@@ -84,9 +102,13 @@ export function nextMineStep({
     }
   }
 
-  // If player moves up, remove the last row
+  // If player moves up and the area is no longer visible, remove the last area
   if (direction === 'up') {
-    newSnapshot.pop();
+    const newPlayerRow = findPlayerRow(newSnapshot);
+    const beforeLast = rows.length - newSnapshot[newSnapshot.length - 1].tiles.length;
+    if (beforeLast > newPlayerRow + 2) {
+      newSnapshot.pop();
+    }
   }
 
   // Returns the new mine data

@@ -1,7 +1,13 @@
 import Images from '../images';
 import { canvasSize, gridTileSize, setupCanvas, drawMineBackground, drawMineTile } from '../canvas';
 import { loadImage } from '@napi-rs/canvas';
-import { MineSnapshotRows, findLongestArray } from '@/utils';
+import {
+  MineSnapshotRows,
+  findLongestArray,
+  findPlayerRow,
+  flattenSnapshot,
+  type MineSnapshotAreas,
+} from '@/utils';
 import type { DefaultAvatarNumber } from '../types';
 
 /*
@@ -21,7 +27,7 @@ export async function renderMineScene({
 }: {
   userId: string;
   avatar: string | null;
-  snapshot: MineSnapshotRows;
+  snapshot: MineSnapshotAreas;
 }) {
   // Create the canvas
   const { canvas, ctx, createImage } = setupCanvas(canvasSize, canvasSize);
@@ -32,13 +38,19 @@ export async function renderMineScene({
     ? await loadImage(`https://cdn.discordapp.com/avatars/${userId}/${avatar}`)
     : Images.avatars[defaultAvatarNumber];
 
+  // Find player
+  const playerRow = findPlayerRow(snapshot);
+
   // Draw the background
   drawMineBackground(canvas, ctx);
 
   // Determine the "visual" snapshot here
+  const rows = flattenSnapshot(snapshot);
   for (let row = 0; row < 9; ++row) {
-    for (let column = 0; column < snapshot[row].length; ++column) {
-      const tile = snapshot[row + snapshot.length - 9][column];
+    const realRow = playerRow - 6 + row;
+    if (!rows[realRow]) continue; // Should never happen
+    for (let column = 0; column < rows[realRow].length; ++column) {
+      const tile = rows[realRow][column];
       drawMineTile({
         ctx,
         tile,
@@ -53,20 +65,23 @@ export async function renderMineScene({
   return createImage();
 }
 
-export async function renderMineRows(snapshot: MineSnapshotRows) {
+export async function renderMineRows(snapshot: MineSnapshotAreas) {
+  // Get rows
+  const rows = flattenSnapshot(snapshot);
+
   // Create the canvas
   const { canvas, ctx, createImage } = setupCanvas(
-    gridTileSize * findLongestArray(snapshot).length,
-    gridTileSize * snapshot.length,
+    gridTileSize * findLongestArray(rows).length,
+    gridTileSize * rows.length,
   );
 
   // Draw the background
   drawMineBackground(canvas, ctx);
 
   // Determine the "visual" snapshot here
-  for (let row = 0; row < snapshot.length; ++row) {
-    for (let column = 0; column < snapshot[row].length; ++column) {
-      const tile = snapshot[row][column];
+  for (let row = 0; row < rows.length; ++row) {
+    for (let column = 0; column < rows[row].length; ++column) {
+      const tile = rows[row][column];
       drawMineTile({
         ctx,
         tile,
