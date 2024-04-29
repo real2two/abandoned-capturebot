@@ -42,7 +42,7 @@ export default new Command({
     let page = 0;
 
     const count = await getInventoryCount(userId);
-    const lastPage = Math.floor(count / 10);
+    const lastPage = Math.floor(count / 8);
 
     const inventory = await getInventory(userId, { page });
     if (!inventory.length && count) return; // Possible, but shouldn't happen (interaction failed)

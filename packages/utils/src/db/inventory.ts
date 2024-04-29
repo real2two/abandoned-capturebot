@@ -6,8 +6,8 @@ export async function getInventory(userId: string, data?: { page: number }) {
     .select()
     .from(schema.inventory)
     .where(eq(schema.inventory.userId, BigInt(userId)))
-    .offset((data?.page || 0) * 10)
-    .limit(10);
+    .offset((data?.page || 0) * 8)
+    .limit(8);
   return inventory;
 }
 

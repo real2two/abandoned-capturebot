@@ -28,7 +28,7 @@ export default new Component({
 
     // Inventory
     const count = await getInventoryCount(userId);
-    const lastPage = Math.floor(count / 10);
+    const lastPage = Math.floor(count / 8);
 
     if (page > lastPage) page = lastPage;
 
