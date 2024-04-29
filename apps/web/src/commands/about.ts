@@ -2,14 +2,14 @@ import Command from '../structures/Command';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { InteractionResponseType, ButtonStyle, ComponentType } from 'discord-api-types/v10';
-import { version } from '@/utils';
+import { BLUE_COLOR, version } from '@/utils';
 
 export default new Command({
   data: new SlashCommandBuilder()
     .setName('about')
     .setDescription('Gives you information about CaptureBot'),
   execute: async ({ interaction, respond }) => {
-    const supportUrl = 'https://discord.gg/mxVTezz';
+    const supportUrl = 'https://discord.com/vanityurl/dotcom/steakpants/flour/flower/index11.html';
     const inviteUrl = `https://discord.com/oauth2/authorize?client_id=${interaction.applicationId}`;
     const githubUrl = 'https://github.com/real2two/capturebot';
     const image = `https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=`;
@@ -19,6 +19,7 @@ export default new Command({
       data: {
         embeds: [
           {
+            color: BLUE_COLOR,
             author: {
               name: 'CaptureBot information',
             },

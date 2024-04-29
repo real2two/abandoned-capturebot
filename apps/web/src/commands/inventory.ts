@@ -2,12 +2,18 @@ import Command from '../structures/Command';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
-import { GREEN_COLOR, getUserAvatar, getUserDisplayName, fetchUser } from '@/utils';
+import {
+  BLUE_COLOR,
+  getUserAvatar,
+  getUserDisplayName,
+  getInventory,
+  getInventoryCount,
+} from '@/utils';
 
 export default new Command({
   data: new SlashCommandBuilder()
-    .setName('balance')
-    .setDescription("Get a user's balance")
+    .setName('inventory')
+    .setDescription("Get a user's inventory")
     .addUserOption((opt) => opt.setName('user').setDescription('The user to fetch')),
   execute: async ({ user, interaction, respond }) => {
     const userId = interaction.data?.options?.[0]?.value || user.id;
@@ -17,7 +23,7 @@ export default new Command({
       return respond({
         type: InteractionResponseType.ChannelMessageWithSource,
         data: {
-          content: `Cannot fetch user information from a bot`,
+          content: `Cannot fetch the inventory of a bot`,
           flags: MessageFlags.Ephemeral,
         },
       });
@@ -28,20 +34,35 @@ export default new Command({
     const displayName = getUserDisplayName(requestedUser, requestedMember);
     const avatar = getUserAvatar(requestedUser);
 
-    const player = await fetchUser(userId);
-    const rocks = player?.currencyRocks || 0n;
+    const count = await getInventoryCount(userId);
+    const lastPage = Math.floor(count / 25);
+
+    let page = 0;
+    if (page > lastPage) page = lastPage;
+
+    const inventory = await getInventory(userId, { page });
+    if (!inventory.length && count) return; // Possible, but shouldn't happen (interaction failed)
 
     return respond({
       type: InteractionResponseType.ChannelMessageWithSource,
       data: {
         embeds: [
           {
-            color: GREEN_COLOR,
-            title: `${displayName}'s balance`,
-            thumbnail: {
-              url: avatar,
+            color: BLUE_COLOR,
+            author: {
+              name: `${displayName}'s inventory`,
+              iconUrl: avatar,
             },
-            description: `🪨 ${rocks} rock${rocks === 1n ? '' : 's'}`,
+            description:
+              count !== 0
+                ? inventory.map((i) => `**${i.itemId}**: ${i.quantity}`).join('\n')
+                : 'You do not have any items in your inventory.',
+            footer:
+              count !== 0
+                ? {
+                    text: `Page ${page + 1} out of ${lastPage + 1}`,
+                  }
+                : undefined,
           },
         ],
       },

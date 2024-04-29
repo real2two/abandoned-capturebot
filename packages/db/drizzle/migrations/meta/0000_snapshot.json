@@ -1,9 +1,44 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "e35d8004-67f8-4c13-b211-ef476d144d1e",
+  "id": "6e390dfb-e81b-4120-9c49-7455b29d2bc7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "inventory": {
+      "name": "inventory",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "bigint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "inventory_user_id_item_id_pk": {
+          "name": "inventory_user_id_item_id_pk",
+          "columns": ["user_id", "item_id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
     "users": {
       "name": "users",
       "columns": {
