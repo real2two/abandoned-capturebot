@@ -17,7 +17,7 @@ export default new Command({
       return respond({
         type: InteractionResponseType.ChannelMessageWithSource,
         data: {
-          content: `Cannot fetch user information from a bot`,
+          content: 'Cannot fetch user information from a bot',
           flags: MessageFlags.Ephemeral,
         },
       });

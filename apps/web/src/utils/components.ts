@@ -1,3 +1,4 @@
+import inventoryComponent from '../components/inventory';
 import mineComponent from '../components/mine';
 
-export default [mineComponent];
+export default [inventoryComponent, mineComponent];

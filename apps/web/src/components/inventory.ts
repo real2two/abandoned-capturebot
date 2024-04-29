@@ -1,62 +1,46 @@
-import Command from '../structures/Command';
-
-import { SlashCommandBuilder } from '@discordjs/builders';
+import Component from '../structures/Component';
 import {
   ButtonStyle,
   ComponentType,
   InteractionResponseType,
   MessageFlags,
 } from 'discord-api-types/v10';
-import {
-  BLUE_COLOR,
-  getUserAvatar,
-  getUserDisplayName,
-  getInventory,
-  getInventoryCount,
-} from '@/utils';
+import { getInventory, getInventoryCount } from '@/utils';
 
-export default new Command({
-  data: new SlashCommandBuilder()
-    .setName('inventory')
-    .setDescription("Get a user's inventory")
-    .addUserOption((opt) => opt.setName('user').setDescription('The user to fetch')),
-  execute: async ({ user, interaction, respond }) => {
-    const userId = interaction.data?.options?.[0]?.value || user.id;
-    const requestedUser = interaction.data?.resolved?.users?.[userId] || user;
+export default new Component({
+  customId: /^inventory:.*$/,
+  execute: async ({ interaction, respond }) => {
+    const values = interaction.data?.customId.split(':');
 
-    if (requestedUser.bot) {
+    const userId = values[2];
+    let page = parseInt(values[3]);
+
+    const embed = interaction.message?.embeds?.[0];
+    if (!embed) {
       return respond({
         type: InteractionResponseType.ChannelMessageWithSource,
         data: {
-          content: 'Cannot fetch the inventory of a bot',
+          content: 'Missing embed. Please run the command again.',
           flags: MessageFlags.Ephemeral,
         },
       });
     }
 
-    const requestedMember =
-      userId === user.id ? interaction.member : interaction.data?.resolved?.members?.[userId];
-    const displayName = getUserDisplayName(requestedUser, requestedMember);
-    const avatar = getUserAvatar(requestedUser);
-
-    let page = 0;
-
+    // Inventory
     const count = await getInventoryCount(userId);
     const lastPage = Math.floor(count / 10);
+
+    if (page > lastPage) page = lastPage;
 
     const inventory = await getInventory(userId, { page });
     if (!inventory.length && count) return; // Possible, but shouldn't happen (interaction failed)
 
     return respond({
-      type: InteractionResponseType.ChannelMessageWithSource,
+      type: InteractionResponseType.UpdateMessage,
       data: {
         embeds: [
           {
-            color: BLUE_COLOR,
-            author: {
-              name: `${displayName}'s inventory`,
-              iconUrl: avatar,
-            },
+            ...embed,
             description:
               count !== 0
                 ? inventory.map((i) => `**${i.itemId}**: ${i.quantity}`).join('\n')
