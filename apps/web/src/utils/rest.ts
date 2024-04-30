@@ -81,7 +81,7 @@ export function editMessage(interaction: CamelizedInteraction, message: Interact
   } else {
     // Create normal response
     return rest.patch(Routes.webhookMessage(interaction.applicationId, interaction.token), {
-      body: message,
+      body: objectToSnake(message),
     }) as Promise<CamelizedRESTPatchAPIWebhookResult>;
   }
 }
