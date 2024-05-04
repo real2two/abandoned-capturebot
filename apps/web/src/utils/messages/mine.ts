@@ -13,6 +13,7 @@ export async function createMineMessage({
   snapshot,
   currencyRocks,
   canMove,
+  setDisabledComponents = false,
   setLoadingComponents = false,
 }: {
   user: CamelizedUser;
@@ -23,6 +24,7 @@ export async function createMineMessage({
     up: boolean;
     right: boolean;
   };
+  setDisabledComponents?: boolean;
   setLoadingComponents?: boolean;
 }): Promise<CamelizedCustomAPIInteractionResponseCallbackData> {
   return {
@@ -51,6 +53,7 @@ export async function createMineMessage({
     ],
     components: createMineMessageComponents({
       canMove,
+      setDisabledComponents,
       setLoadingComponents,
     }),
   };
@@ -58,6 +61,7 @@ export async function createMineMessage({
 
 export function createMineMessageComponents({
   canMove,
+  setDisabledComponents = false,
   setLoadingComponents = false,
 }: {
   canMove: {
@@ -65,8 +69,13 @@ export function createMineMessageComponents({
     up: boolean;
     right: boolean;
   };
+  setDisabledComponents?: boolean;
   setLoadingComponents?: boolean;
 }): CamelizedCustomAPIInteractionResponseCallbackData['components'] {
+  if (setDisabledComponents && setLoadingComponents) {
+    throw new Error('Disabling components and load components cannot both be true');
+  }
+
   return [
     {
       type: ComponentType.ActionRow,
@@ -74,23 +83,32 @@ export function createMineMessageComponents({
         {
           type: ComponentType.Button,
           style: ButtonStyle.Secondary,
-          emoji: setLoadingComponents ? { id: LOADING_EMOJI_ID } : { name: '◀️' },
+          emoji:
+            setDisabledComponents || setLoadingComponents
+              ? { id: LOADING_EMOJI_ID }
+              : { name: '◀️' },
           customId: 'mine:left',
-          disabled: setLoadingComponents || !canMove.left,
+          disabled: setDisabledComponents || setLoadingComponents || !canMove.left,
         },
         {
           type: ComponentType.Button,
           style: ButtonStyle.Secondary,
-          emoji: setLoadingComponents ? { id: LOADING_EMOJI_ID } : { name: '🔼' },
+          emoji:
+            setDisabledComponents || setLoadingComponents
+              ? { id: LOADING_EMOJI_ID }
+              : { name: '🔼' },
           customId: 'mine:up',
-          disabled: setLoadingComponents || !canMove.up,
+          disabled: setDisabledComponents || setLoadingComponents || !canMove.up,
         },
         {
           type: ComponentType.Button,
           style: ButtonStyle.Secondary,
-          emoji: setLoadingComponents ? { id: LOADING_EMOJI_ID } : { name: '▶️' },
+          emoji:
+            setDisabledComponents || setLoadingComponents
+              ? { id: LOADING_EMOJI_ID }
+              : { name: '▶️' },
           customId: 'mine:right',
-          disabled: setLoadingComponents || !canMove.right,
+          disabled: setDisabledComponents || setLoadingComponents || !canMove.right,
         },
         {
           type: ComponentType.Button,

@@ -1,4 +1,5 @@
 import Component from '../structures/Component';
+import { editMessage } from '../utils/rest';
 
 import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
 import {
@@ -11,13 +12,16 @@ import {
   setCooldown,
   updateUser,
 } from '@/utils';
-import { createMineMessage } from '../utils/messages';
+import { createMineMessage, createMineMessageComponents } from '../utils/messages';
 
 // This is the mine cooldown
 // The mine cooldown should always be above 200ms to prevent rate limit problems
 // Also, there's an issue on Discord with embeds being slow at loading images, so keep that in mind
 const cooldownName = 'component:mine';
-const clickerCooldown = 400; // 0.4 seconds
+const clickerMaxClicksAtOnce = 5;
+const clickerSingleCooldown = 400;
+const clickerCooldown = clickerMaxClicksAtOnce * 510;
+const clickerRetainValue = clickerCooldown;
 
 export default new Component({
   customId: /^mine:.*$/,
@@ -34,27 +38,66 @@ export default new Component({
       });
     }
 
+    // Gets the button information
+    const customId = interaction.data?.customId;
+    const direction = customId.slice('mine:'.length) as 'up' | 'left' | 'right' | 'refresh';
+
     // Checks cooldown
-    if (await getCooldown(cooldownName, user.id)) {
-      return respond({
-        type: InteractionResponseType.ChannelMessageWithSource,
-        data: {
-          content: 'You are running this action too fast!',
-          flags: MessageFlags.Ephemeral,
+    const cooldown = (await getCooldown(cooldownName, user.id)) as
+      | {
+          expiresIn: number;
+          value: {
+            normal?: number;
+            up: number[];
+          };
+        }
+      | undefined;
+
+    if (cooldown) {
+      // Met cooldown
+      if (
+        (cooldown.value.normal && direction !== 'up' && cooldown.value.normal - Date.now() > 0) ||
+        cooldown.value.up.length >= clickerMaxClicksAtOnce
+      ) {
+        // return respond({
+        //   type: InteractionResponseType.ChannelMessageWithSource,
+        //   data: {
+        //     content: 'You are running this action too fast!',
+        //     flags: MessageFlags.Ephemeral,
+        //   },
+        // });
+        return respond({
+          type: InteractionResponseType.DeferredMessageUpdate,
+        });
+      }
+      // Update existing cooldown data
+      if (direction === 'up') cooldown.value.up.push(Date.now() + clickerRetainValue);
+      await setCooldown({
+        action: cooldownName,
+        userId: user.id,
+        expiresIn: clickerCooldown,
+        value: {
+          normal: Date.now() + clickerSingleCooldown,
+          up: cooldown.value.up.filter((e) => e - Date.now() > 0),
+        },
+      });
+    } else {
+      // Create initial cooldown data
+      await setCooldown({
+        action: cooldownName,
+        userId: user.id,
+        expiresIn: clickerCooldown,
+        value: {
+          normal: Date.now() + clickerSingleCooldown,
+          up: direction === 'up' ? [Date.now() + clickerCooldown] : [],
         },
       });
     }
 
-    // Sets the cooldown (anti-cheat)
-    await setCooldown({
-      action: cooldownName,
-      userId: user.id,
-      expiresIn: clickerCooldown,
-    });
+    const reachedCooldown =
+      (cooldown?.value.up.length || 0) + Number(direction === 'up') >= clickerMaxClicksAtOnce;
 
-    const customId = interaction.data?.customId;
-    const direction = customId.slice('mine:'.length) as 'up' | 'left' | 'right' | 'refresh';
-
+    // Gets the player
     const player = await getUser(user.id);
     const { canMove } = findPlayer(player.mineSnapshot);
 
@@ -112,15 +155,39 @@ export default new Component({
       snapshot,
       currencyRocks,
       canMove: updatedCanMove,
+      setDisabledComponents: direction === 'up' && reachedCooldown,
     });
 
-    // Sends the mine forward message
-    // The timeout is to prevent interaction failed
-    setTimeout(async () => {
-      return respond({
+    if (direction === 'up') {
+      // Sends the mine forward message
+      if (!reachedCooldown) {
+        return respond({
+          type: InteractionResponseType.UpdateMessage,
+          data: message,
+        });
+      }
+      // Respond message in a timeout if reachedCooldown === true
+      await respond({
         type: InteractionResponseType.UpdateMessage,
         data: message,
       });
-    }, clickerCooldown);
+      // If you reached your cooldown, edit the message after the cooldown is over
+      // The timeout is to prevent interaction failed
+      return setTimeout(() => {
+        editMessage(interaction, {
+          components: createMineMessageComponents({
+            canMove: updatedCanMove,
+          }),
+        });
+      }, clickerCooldown);
+    } else {
+      // If you aren't going up, use setTimeout to delay movement
+      setTimeout(() => {
+        return respond({
+          type: InteractionResponseType.UpdateMessage,
+          data: message,
+        });
+      }, clickerSingleCooldown);
+    }
   },
 });
