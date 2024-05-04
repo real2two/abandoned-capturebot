@@ -9,7 +9,8 @@ import { getInventory, getInventoryCount } from '@/utils';
 
 export default new Component({
   customId: /^inventory:.*$/,
-  execute: async ({ interaction, respond }) => {
+  interactionOwnerOnly: true,
+  execute: async ({ interaction, user, respond }) => {
     const values = interaction.data?.customId.split(':');
 
     const userId = values[2];

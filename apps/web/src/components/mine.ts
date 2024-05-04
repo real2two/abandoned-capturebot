@@ -21,18 +21,8 @@ const clickerCooldown = 400; // 0.4 seconds
 
 export default new Component({
   customId: /^mine:.*$/,
+  interactionOwnerOnly: true,
   execute: async ({ interaction, user, respond }) => {
-    // Disallows other people from using somebody else's interaction
-    if (interaction.message?.interaction?.user.id !== user.id) {
-      return respond({
-        type: InteractionResponseType.ChannelMessageWithSource,
-        data: {
-          content: 'This is not your interaction',
-          flags: MessageFlags.Ephemeral,
-        },
-      });
-    }
-
     // Only allow executing the active mine message
     if ((await getMineActiveMessage(user.id)) !== interaction.message?.id) {
       return respond({
