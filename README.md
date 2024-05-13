@@ -1,3 +1,11 @@
+Note: This is one of my abandoned Discord bots I decided to release.
+
+I know there's some questionable decisions I made (ex. like I didn't know you could do [this](https://github.com/discordjs/discord.js/tree/main/packages/core#independent-rest-api-usage) with Discord.JS's REST API), but this is just some stuff I've been making for fun.
+
+This project wasn't meant to be serious at all, but more of a personal project to take a break from bigger projects.
+
+---
+
 # Capturebot
 
 This is a Discord bot where you can catch users like you can in Pokemon.
