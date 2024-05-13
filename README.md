@@ -4,6 +4,8 @@ I know there's some questionable decisions I made (ex. like I didn't know you co
 
 This project wasn't meant to be serious at all, but more of a personal project to take a break from bigger projects.
 
+The README is a bit very misleading and there isn't any "catching users". This is more of an autoclicker but there's a map where you can go forwards, left and right.
+
 ---
 
 # Capturebot
